@@ -54,8 +54,9 @@ const definitiveDeletingBanner = (bupSlugId, cldSlugId, arr) => {
   }
 }
 
-// const removeImgFromImgsKept = (arr, imgSlugId) => { // arr = imgsKept
+// const removeImgFromImgsKept = (imgSlugId,arr) => { // arr = imgsKept
 //   deleteOneEltFromArray(imgSlugId,arr)
+//   deleteOneImg(imgSlugId)
 // }
     
 

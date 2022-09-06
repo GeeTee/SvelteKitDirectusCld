@@ -55,7 +55,7 @@
     </ul>
     `
     const textNotifItemCreatingStep1 = `
-    Ici première étape pour créer un article <br/>vous effectuez les deux étapes obligatoires : 
+    <span class="has-text-primary"><i class="fas fa-user-edit fa-2x"></i></span> Ici première étape pour créer un article <br/>vous effectuez les deux étapes obligatoires : 
     <ul>
         <li>Renseigner le titre</li>
         <li>Rédigez le rédactionnel principal</li>
@@ -63,7 +63,7 @@
     Puis Enregistrez et laissez vous guider
     `
     const textNotifItemCreatingStep2 = `
-    <strong>Bravo vous venez de créer un nouvel article!</strong>, <br />maintenant, vous pouvez lui ajouter : 
+    <span class="has-text-success"><i class="fas fa-thumbs-up fa-2x"></i></span> <strong>Bravo vous venez de créer un nouvel article!</strong>, <br />maintenant, vous pouvez lui ajouter : 
     <ul>
         <li>Une image de bannière</li>
         <li>Un (des) block(s) de texte agrémentés ou non d'image</li>
@@ -231,6 +231,7 @@
             if (res) {
                 // console.log('create article res')
                 ar.addArticle(res)
+                console.log('createItem store in res', $ar)
                 goto(`/backend/articles/${createdItem.slug}/update?action=complete-article`)
             }            
         }
@@ -262,19 +263,19 @@
     $: deleteBannerValid = (cld_public_id !== '')? true : false
     const getNewBannerId = (e) => {
         const {public_id} = e.detail
-        console.log('getNewBannerId', public_id)
+        // console.log('getNewBannerId', public_id)
         imgsKept.push(f.slashToUnderscore(public_id))
-        console.log('getNewBannerId', {imgsKept})
+        // console.log('getNewBannerId', {imgsKept})
         cld_public_id = public_id
-        console.log('getNewBannerId', {cld_public_id})
+        // console.log('getNewBannerId', {cld_public_id})
     }
     const renewBannerId = (e) => {
         const {public_id} = e.detail
-        console.log('renewBannerId', {public_id})
+        // console.log('renewBannerId', {public_id})
         imgsKept.push(f.slashToUnderscore(public_id))
-        console.log('renewBannerId', {imgsKept})
+        // console.log('renewBannerId', {imgsKept})
         cld_public_id = public_id
-        console.log('renewBannerId', {cld_public_id})
+        // console.log('renewBannerId', {cld_public_id})
         dnBanner = false
     }
     const saveNewBanner = async () => {
@@ -522,12 +523,20 @@
 
     // FULL ARTICLE
     const externalDeletingArticle = async () => {
-        // console.log('externalDeletingArticle', {id}, {cld_public_id})
+        console.log('externalDeletingArticle', {itemToEdit})
+        
         if (itemToEdit) {
-            
+                console.log('externalDeletingArticle itemToEdit', {id}, {cld_public_id})
                 // BANNER
-                if (cld_public_id) {
+                if (cld_public_id && itemBup.cld_public_id) {
+                    console.log('cld_public_id && itemBup.cld_public_id', {cld_public_id}, itemBup.cld_public_id)
                     f.definitiveDeletingBanner(f.slashToUnderscore(itemBup.cld_public_id), f.slashToUnderscore(cld_public_id), imgsKept)
+                }
+
+                if (cld_public_id && !itemBup.cld_public_id) {
+                    console.log('cld_public_id && !itemBup.cld_public_id', {cld_public_id}, itemBup.cld_public_id)
+                    f.deleteOneEltFromArray(imgsKept, f.slashToUnderscore(cld_public_id))
+                    f.deleteOneImg(f.slashToUnderscore(cld_public_id))
                 }
 
                 // ILLUSTRATIONS DES BLOCKS

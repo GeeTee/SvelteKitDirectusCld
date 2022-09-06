@@ -17,7 +17,8 @@ const customArticlesStore = {
     },
     updateArticle: (id, ArticleData) => {
         articles.update((items) => {
-        const ArticleIdx = items.findIndex((item) => item.id === id);
+        const ArticleIdx = items.findIndex((item) => item.id == id);
+        console.log('store start', {id}, {ArticleIdx},  {items}, {ArticleData})
         const updatedArticle = {
             ...items[ArticleIdx],
             ...ArticleData,

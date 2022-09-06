@@ -17,7 +17,7 @@ const customNewsStore = {
     },
     updatePost: (id, PostData) => {
         news.update((items) => {
-        const PostIdx = items.findIndex((item) => item.id === id);
+        const PostIdx = items.findIndex((item) => item.id == id);
         const updatedPost = {
             ...items[PostIdx],
             ...PostData,
