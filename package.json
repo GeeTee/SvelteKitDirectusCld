@@ -1,0 +1,32 @@
+{
+	"name": "sveltek-d-2",
+	"version": "0.0.2",
+	"scripts": {
+		"dev": "svelte-kit dev",
+		"build": "svelte-kit build",
+		"package": "svelte-kit package",
+		"preview": "svelte-kit preview",
+		"prepare": "svelte-kit sync",
+		"lint": "prettier --check --plugin-search-dir=. .",
+		"format": "prettier --write --plugin-search-dir=. ."
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "next",
+		"@sveltejs/kit": "next",
+		"prettier": "^2.6.2",
+		"prettier-plugin-svelte": "^2.7.0",
+		"sass": "^1.52.3",
+		"svelte": "^3.44.0",
+		"svelte-preprocess": "^4.10.6"
+	},
+	"type": "module",
+	"dependencies": {
+		"@cloudinary/url-gen": "^1.8.0",
+		"@directus/sdk": "^9.12.2",
+		"cloudinary": "^1.30.0",
+		"cookie": "^0.5.0",
+		"photoswipe": "^5.2.7",
+		"slugify": "^1.6.5",
+		"validator": "^13.7.0"
+	}
+}
