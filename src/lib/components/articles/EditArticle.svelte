@@ -64,7 +64,7 @@
     `
     const headingNotifItemCreatingStep2 = 'Deuxième étape'
     const textNotifItemCreatingStep2 = `
-    <span class="has-text-success"><i class="fas fa-thumbs-up fa-2x"></i></span> <strong>Bravo vous venez de créer un nouvel article!</strong>, <br />maintenant, vous pouvez lui ajouter :  <br /><br />
+    <span class="has-text-success"><i class="fas fa-thumbs-up fa-2x"></i></span> <strong>Bravo vous venez de créer un nouvel article!</strong>, <br />maintenant, vous pouvez lui ajouter :  <br /><br />f
     <ul class="subtitle">
         <li>Une image de bannière</li>
         <li>Un (des) block(s) de texte agrémentés ou non d'image</li>
@@ -615,7 +615,6 @@
             {cld_public_id} 
             {croppingAspectRatio} 
             isOutlined={true}
-            showDeleteImg={true}
             text={`Pensez à enregistrer le choix de votre photo. <br />Bouton jaune ci dessous :  "Enregistrer la modif"`}
             buttonTextDelete={`Enlever l'image`}
             imageInstalled={true}
