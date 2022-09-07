@@ -53,13 +53,7 @@ const definitiveDeletingBanner = (bupSlugId, cldSlugId, arr) => {
     deleteOneImg(bupSlugId) // delete l'imag de itemToEdit et enrgistrée et sur cld
   }
 }
-
-// const removeImgFromImgsKept = (imgSlugId,arr) => { // arr = imgsKept
-//   deleteOneEltFromArray(imgSlugId,arr)
-//   deleteOneImg(imgSlugId)
-// }
     
-
 // cloudinary
 const imgSquareW = (w, public_id) => {
     return `https://res.cloudinary.com/geeteeimages/image/upload/ar_1,c_thumb,q_auto,w_${w},h_${w}/${public_id}`
