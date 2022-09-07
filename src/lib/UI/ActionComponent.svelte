@@ -1,6 +1,7 @@
 <script>
     export let fct;
     export let fctDel;
+    // export let editing = false
     export let creating = false
     export let deleting = false
     let classBase = ["actions", "ml-3"]

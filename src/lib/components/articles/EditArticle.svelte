@@ -17,7 +17,7 @@
     import Button from '$lib/UI/Button.svelte'
     import ButtonsCancelConfirm from '$lib/UI/ButtonsCancelConfirm.svelte'
     import Confirmation from '$lib/UI/ConfirmationActionLite.svelte'
-    import Notification from '$lib/UI/elements/Notification.svelte'
+    import Notification from '$lib/UI/elements/NotificationDetails.svelte'
 
     export let itemToEdit = undefined
     export let canDeleteArticle = true
@@ -46,31 +46,33 @@
     const croppingAspectRatio = 1.385
 
     // VARS NOTIFICATIONS
+    const headingNotifItemToEditDefault = 'ici, vous pouvez'
     const textNotifItemToEditDefault = `
-    Ici vous gérez votre article <br/>vous pouvez : 
-    <ul>
-        <li>le compléter</li>
-        <li>le modifier</li>
-        <li>le détruire définitivement</li>
+    <ul class="subtitle">
+        <li>Compléter votre article</li>
+        <li>Le modifier</li>
+        <li>Le détruire définitivement</li>
     </ul>
     `
     const textNotifItemCreatingStep1 = `
-    <span class="has-text-primary"><i class="fas fa-user-edit fa-2x"></i></span> Ici première étape pour créer un article <br/>vous effectuez les deux étapes obligatoires : 
-    <ul>
+    <span class="has-text-primary"><i class="fas fa-user-edit fa-2x"></i></span> Ici première étape pour créer un article <br/>vous effectuez les deux étapes obligatoires : <br /><br />
+    <ul class="subtitle">
         <li>Renseigner le titre</li>
         <li>Rédigez le rédactionnel principal</li>
     </ul>
     Puis Enregistrez et laissez vous guider
     `
+    const headingNotifItemCreatingStep2 = 'Deuxième étape'
     const textNotifItemCreatingStep2 = `
-    <span class="has-text-success"><i class="fas fa-thumbs-up fa-2x"></i></span> <strong>Bravo vous venez de créer un nouvel article!</strong>, <br />maintenant, vous pouvez lui ajouter : 
-    <ul>
+    <span class="has-text-success"><i class="fas fa-thumbs-up fa-2x"></i></span> <strong>Bravo vous venez de créer un nouvel article!</strong>, <br />maintenant, vous pouvez lui ajouter :  <br /><br />
+    <ul class="subtitle">
         <li>Une image de bannière</li>
         <li>Un (des) block(s) de texte agrémentés ou non d'image</li>
         <li>Une galerie image </li>
     </ul>
     `
     $: textNotifItemToEdit = newArticle ? textNotifItemCreatingStep2 : textNotifItemToEditDefault
+    $: headingNotifItemToEdit = newArticle ? headingNotifItemCreatingStep2 : headingNotifItemToEditDefault
 
     // VARS CONFIRMATIONS
     let openModal = false
@@ -593,6 +595,7 @@
         <Notification
         is-primary
         is-light
+        heading='à savoir'
         text={textNotifItemCreatingStep1}
         />
     {/if}
@@ -600,6 +603,7 @@
         <Notification
         is-info
         is-light
+        heading={headingNotifItemToEdit}
         text={textNotifItemToEdit}
         />
     {/if}
@@ -715,7 +719,6 @@
         <Html 
         content={`<span class="title">${itemToEdit ? title : 'Renseigner le titre'}</span>`} 
         fct={editingTitle}
-        creating={true}
         />
     {/if}
 
@@ -758,7 +761,6 @@
         <Html 
         content={`<div>${itemToEdit ? main_text : '<span class="title">Rédigez votre texte</span>'}</div>`} 
         fct={editingMainText}
-        creating={true}
         />
     {/if}
 
