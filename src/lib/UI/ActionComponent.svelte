@@ -41,6 +41,7 @@ class={classL}
     .actions {
         display: flex;
         flex-direction: column;
+        justify-content: center;
     }
     i:hover {
         cursor: pointer;

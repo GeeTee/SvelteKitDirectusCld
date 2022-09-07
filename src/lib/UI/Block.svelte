@@ -7,17 +7,17 @@
     import Notification from '$lib/UI/elements/Notification.svelte'
     import ImagUpload from '$lib/partials/images/cld/ImageUploadCld.svelte'
     import Content from '$lib/components/articles/BlockContent.svelte'
+    import HtmlO from "$lib/UI/EditableHtml-0.svelte";
     import Actions from '$lib/UI/ActionComponent.svelte'
     import Confirmation from '$lib/UI/ConfirmationActionLite.svelte'
 
     const dispatch = createEventDispatcher();
 
     export let block
-    export let fctDel;
-
     export let updateBlock = false
     export let creatingBlock = false
     export let deletingBlock = false
+    export let newMoreBlockInfo = 'Créer un block'
 
     let isEdited = false
     let showSavingWarning = false
@@ -50,9 +50,6 @@
         image_position = block.image_position
     } 
 
-    
-    // let {id,title, text, image, image_width, image_height, image_position} = block
-
     const croppingAspectRatio = 1
     let dnBanner = true
 
@@ -81,22 +78,11 @@
     if (!text) {
         text = ''
     }
-    // if (!image) {
-    //     image = ''
-    // }
-    // $: console.log('block', {id}, {title}, {text})
-
-    // const renewIllustrationId = (e) => {
-    //     image = e.detail.public_id
-    //     console.log('renewIllustrationId', {image})
-    // }
 
     const getIllustrationId = (e) => {
         image = e.detail.public_id
         console.log('getIllustrationId', {image})
     }
-    //TODO: fusionner les 2 fonctions ci dessus ?
-    //TODO: ajouter le choix de la position de l'image dans le block
 
     const deleteIllustration = () => {
         image = ''
@@ -359,7 +345,24 @@
         </div>
     {/if}
     {#if !isEdited}
-        <div class="container">
+        <HtmlO
+        label='Block de rédaction'
+        fct={() => {
+                isEdited = true
+                console.log('open block', {block})
+            }}
+        creating={creatingBlock}
+        deleting={deletingBlock}
+        fctDel={enableModalToDelete}
+        >
+        {#if block}
+            <Content {block} />
+        {/if}
+        {#if !block}
+            {newMoreBlockInfo}
+        {/if}
+        </HtmlO>
+        <!-- <div class="container">
             <div>
                 <Content {block} />
             </div>
@@ -375,7 +378,7 @@
             }}
             />
             </div>
-        </div>
+        </div> -->
 
         <Confirmation
         {openModal}

@@ -10,6 +10,7 @@
 
     import TextInput from "$lib/UI/TextInput.svelte";
     import Html from "$lib/UI/EditableHtml.svelte";
+    import HtmlO from "$lib/UI/EditableHtml-0.svelte";
     import Block from "$lib/UI/Block.svelte";
     import ImagUpload from '$lib/partials/images/cld/ImageUploadCld.svelte'
     import GallUpload from '$lib/partials/images/cld/GalleryImgsUploadCld.svelte'
@@ -75,12 +76,12 @@
     $: headingNotifItemToEdit = newArticle ? headingNotifItemCreatingStep2 : headingNotifItemToEditDefault
 
     // VARS CONFIRMATIONS
-    let openModal = false
+    let openGalleryModal = false
     let openBannerModal = false
     let openDangerModal = false
-    const openingModal = () => {
-    console.log('openingModal')
-    openModal = true
+    const openingGalleryModal = () => {
+    console.log('openingGalleryModal')
+    openGalleryModal = true
     }
     const openingBannerModal = () => {
         console.log('openingBannerModal')
@@ -607,6 +608,95 @@
         text={textNotifItemToEdit}
         />
     {/if}
+    <h2 class="subtitle is-uppercase is-size-5 has-text-primary">Éléments indispensables</h2>
+    {#if editTitle}
+        <TextInput
+            id="title"
+            label="Titre"
+            type="text"
+            valid={titleValid}
+            validityMessage="Entrez votre Titre"
+            controlType="input"
+            value={title}
+            on:input={event => (title = event.target.value)} />
+        {#if title === '' && itemToEdit}
+             <span class="has-text-danger">Vous ne pouvez pas effacer le titre de l'article => abandonner la modif</span>
+        {/if}
+        {#if title === '' && !itemToEdit}
+             <span class="has-text-info">Le titre de l'article est indispensable</span>
+        {/if}
+        {#if itemToEdit}
+            <div class="buttons">
+                <Button
+                is-primary
+                enabled={titleValid}
+                fct={saveNewTitle}
+                >
+                    Enregistrer la modif
+                </Button>
+                <Button
+                is-info
+                enabled={true}
+                fct={cancelModifTitle}
+                >
+                    Abandonner la modif
+                </Button>
+            </div>
+        {/if}
+    {/if}
+    {#if !editTitle}
+        <HtmlO 
+        label={`Titre de l'article`}
+        fct={editingTitle}
+        >
+        <p class="title">{itemToEdit ? title : 'Renseigner le titre'}</p>
+        </HtmlO>
+    {/if}
+
+    {#if editMainText}
+        <TextInput
+            id="main-text"
+            label="Text principal"
+            valid={mainTextValid}
+            validityMessage="Rédigez votre texte"
+            controlType="textarea"
+            bind:value={main_text}
+            />
+        {#if main_text === '' && itemToEdit}
+             <span class="has-text-danger">Vous ne pouvez pas effacer le texte principal de l'article => abandonner la modif</span>
+        {/if}
+        {#if main_text === '' && !itemToEdit}
+             <span class="has-text-info">Le texte principal de l'article est indispensable</span>
+        {/if}
+        {#if itemToEdit}
+            <div class="buttons">
+                <Button
+                is-primary
+                enabled={mainTextValid}
+                fct={saveNewMainText}
+                >
+                    Enregistrer la modif
+                </Button>
+                <Button
+                is-info
+                enabled={true}
+                fct={cancelModifMainText}
+                >
+                    Abandonner la modif
+                </Button>
+            </div>
+        {/if}
+    {/if}
+
+    {#if !editMainText}
+        <HtmlO 
+        label='Texte principal'
+        fct={editingMainText}
+        >
+        <div>{@html itemToEdit ? main_text : '<span class="title">Rédigez votre texte</span>'}</div>
+        </HtmlO>
+    {/if}
+    <h2 class="subtitle is-uppercase is-size-5 has-text-info">Éléments complémentaires</h2>
     {#if editBanner}
     <div class="banner-choice">
         <p class="label">Bannière</p>
@@ -654,14 +744,16 @@
     </div>
     {/if}
     {#if !editBanner && cld_public_id}
-        <Html 
-        content={`<div class="edit-banner block">
-                    <img src=${f.bannerResizeW(500, cld_public_id)} alt="">
-                </div>`} 
+        <HtmlO 
+        label='Image de bannière'
         fct={editingBanner}
         fctDel={openingBannerModal}
         deleting={true}
-        />
+        >
+        <div class="edit-banner block">
+            <img src={f.bannerResizeW(500, cld_public_id)} alt="">
+        </div>
+        </HtmlO>
         <Confirmation
         openModal={openBannerModal}
         title={`Détruire la photo`}
@@ -673,177 +765,94 @@
         />
     {/if}
     {#if !editBanner && !cld_public_id && itemToEdit}
-         <Html 
-        content={`<span class="title">Bannière</span>`} 
+        <HtmlO 
+        label='Image de bannière'
         fct={editingBanner}
         creating={true}
-        />
-    {/if}
-    {#if editTitle}
-        <TextInput
-            id="title"
-            label="Titre"
-            type="text"
-            valid={titleValid}
-            validityMessage="Entrez votre Titre"
-            controlType="input"
-            value={title}
-            on:input={event => (title = event.target.value)} />
-        {#if title === '' && itemToEdit}
-             <span class="has-text-danger">Vous ne pouvez pas effacer le titre de l'article => abandonner la modif</span>
-        {/if}
-        {#if title === '' && !itemToEdit}
-             <span class="has-text-info">Le titre de l'article est indispensable</span>
-        {/if}
-        {#if itemToEdit}
-            <div class="buttons">
-                <Button
-                is-primary
-                enabled={titleValid}
-                fct={saveNewTitle}
-                >
-                    Enregistrer la modif
-                </Button>
-                <Button
-                is-info
-                enabled={true}
-                fct={cancelModifTitle}
-                >
-                    Abandonner la modif
-                </Button>
-            </div>
-        {/if}
-    {/if}
-    {#if !editTitle}
-        <Html 
-        content={`<span class="title">${itemToEdit ? title : 'Renseigner le titre'}</span>`} 
-        fct={editingTitle}
-        />
+        >
+        Installer une image de bannière
+        </HtmlO>
     {/if}
 
-    {#if editMainText}
-        <TextInput
-            id="main-text"
-            label="Text principal"
-            valid={mainTextValid}
-            validityMessage="Rédigez votre texte"
-            controlType="textarea"
-            bind:value={main_text}
-            />
-        {#if main_text === '' && itemToEdit}
-             <span class="has-text-danger">Vous ne pouvez pas effacer le texte principal de l'article => abandonner la modif</span>
-        {/if}
-        {#if main_text === '' && !itemToEdit}
-             <span class="has-text-info">Le texte principal de l'article est indispensable</span>
-        {/if}
-        {#if itemToEdit}
-            <div class="buttons">
-                <Button
-                is-primary
-                enabled={mainTextValid}
-                fct={saveNewMainText}
-                >
-                    Enregistrer la modif
-                </Button>
-                <Button
-                is-info
-                enabled={true}
-                fct={cancelModifMainText}
-                >
-                    Abandonner la modif
-                </Button>
-            </div>
-        {/if}
-    {/if}
 
-    {#if !editMainText}
-        <Html 
-        content={`<div>${itemToEdit ? main_text : '<span class="title">Rédigez votre texte</span>'}</div>`} 
-        fct={editingMainText}
-        />
-    {/if}
 
     {#if $parts.length > 0}
     <span class="tag is-info">Nombre de blocks : {$parts.length}</span>
     
         {#each $parts as block}
-                <Block 
-                {block} 
-                updateBlock={true}
-                deletingBlock={true}
-                on:update-block={updateBlock}
-                on:deleting-this-block={deletingThisBlock}
-                />
+            <Block 
+            {block}
+            updateBlock={true}
+            deletingBlock={true}
+            on:update-block={updateBlock}
+            on:deleting-this-block={deletingThisBlock}
+            />
         {/each}
-        <div>
-            <span class="title">Ajouter un autre block</span>
-            <Block
+            <Block 
+            newMoreBlockInfo='Compléter avec un autre block'
             updateBlock={true} 
             creatingBlock={true}
             on:save-new-block={saveNewBlock}
             />
-        </div>
     {:else if $parts.length === 0 && itemToEdit }
-        <div>
-            <span class="title">Ajouter un premier block</span>
             <Block
             updateBlock={true} 
             creatingBlock={true}
+            newMoreBlockInfo='Ajouter un premier block'
             on:save-new-block={saveNewBlock}
             />
-        </div>
     {/if}
 
     {#if editGallery}
-    <GallUpload 
-    {thumbGallery}
-    showAdvancedOptions={false}
-    uploadPreset='Actibenne_postsGalleries'
-    isOutlined={true}
-    dn={dnGallery}
-    on:get-gallery-info={getGalleryInfo}
-    on:deleting-Imgs={deletingImgs}
-    on:empty-gallery={emptyGallery}
-    />
-    <div class="buttons">
-        <Button
-        is-primary
-        enabled={true}
-        fct={saveNewGallery}
-        >
-            Enregistrer la modif
-        </Button>
-        <Button
-        is-info
-        enabled={true}
-        fct={cancelModifGallery}
-        >
-            Abandonner la modif
-        </Button>
-    </div>
+        <GallUpload 
+        {thumbGallery}
+        showAdvancedOptions={false}
+        uploadPreset='Actibenne_postsGalleries'
+        isOutlined={true}
+        dn={dnGallery}
+        on:get-gallery-info={getGalleryInfo}
+        on:deleting-Imgs={deletingImgs}
+        on:empty-gallery={emptyGallery}
+        />
+        <div class="buttons">
+            <Button
+            is-primary
+            enabled={true}
+            fct={saveNewGallery}
+            >
+                Enregistrer la modif
+            </Button>
+            <Button
+            is-info
+            enabled={true}
+            fct={cancelModifGallery}
+            >
+                Abandonner la modif
+            </Button>
+        </div>
     {/if}
     {#if !editGallery && itemToEdit}
-        <Html 
-        type='component'
-        component={thumbGallCompo}
-        props={thumbGallProps}
+        <HtmlO
+        label='Vignettes des images de la galerie'
         fct={editingGallery}
-        fctDel={openingModal}
+        fctDel={openingGalleryModal}
         creating={creatingGalleryBtn}
-        deletingCompo={deletingGallBtn}
-        />
+        deleting={deletingGallBtn}
+        >
+            <ThumbsGallery {thumbGallery} />
+        </HtmlO>
 
         <Confirmation
-        {openModal}
-        title={`Détruire ce block`}
+        openModal={openGalleryModal}
+        title={`Détruire la gallerie images`}
         phrase='détruire'
         on:confirmation={() => {
             console.log('Emptying Gallery')
             externalEmptyGallery()
-            openModal = false
+            openGalleryModal = false
         }}
         on:leaving={
-            () => openModal = false
+            () => openGalleryModal = false
         } />
 
     {/if}

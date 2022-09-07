@@ -5,13 +5,10 @@
 </script>
 
 {#if thumbGallery.length > 0}
+<div class="is-flex is-flex-direction-column">
     <p class="label">Gérer la gallerie images ({thumbGallery.length})</p>
-{:else}
-    <p class="label">Alimenter la gallerie images</p>
-{/if}
-{#if thumbGallery.length > 0}
      <ol>
-        {#each thumbGallery as {slug, public_id}}
+        {#each thumbGallery as {public_id}}
             <li>
                 <div>
                     <img src={fctImg(public_id)} alt="//TODO:">
@@ -19,12 +16,14 @@
             </li>
         {/each}
      </ol>
-{/if}
-{#if thumbGallery.length <= 0}
+</div>
+{:else}
+<div class="is-flex is-flex-direction-column">
+    <p class="label">Débuter la gallerie images</p>
     <div class="notification is-primary">
-        <strong>Notification //TODO: vide</strong>
-    </div>   
-     
+        En cliquant sur la bouton plus vous pourrez alimenter votre gallerie images
+    </div> 
+</div>
 {/if}
 
 <style lang="scss">
