@@ -19,6 +19,7 @@
     import ButtonsCancelConfirm from '$lib/UI/ButtonsCancelConfirm.svelte'
     import Confirmation from '$lib/UI/ConfirmationActionLite.svelte'
     import Notification from '$lib/UI/elements/NotificationDetails.svelte'
+    import IconsLinks from '$lib/UI/actionsIcones/IconsLinks.svelte';
 
     export let itemToEdit = undefined
     export let canDeleteArticle = true
@@ -123,6 +124,7 @@
         itemBup = {...itemToEdit}
         id = itemToEdit.id
         title = itemToEdit.title
+        slug = itemToEdit.slug
         main_text = itemToEdit.main_text
         slug = itemToEdit.slug
         if (itemToEdit.blocks) {
@@ -608,6 +610,11 @@
         text={textNotifItemToEdit}
         />
     {/if}
+
+    <IconsLinks
+    linkValue={`articles/${slug}`}
+    linkLibelle='Article côté visiteur'
+    />
     <h2 class="subtitle is-uppercase is-size-5 has-text-primary">Éléments indispensables</h2>
     {#if editTitle}
         <TextInput
@@ -839,7 +846,7 @@
         creating={creatingGalleryBtn}
         deleting={deletingGallBtn}
         >
-            <ThumbsGallery {thumbGallery} />
+            <ThumbsGallery {thumbGallery} altText={title} />
         </HtmlO>
 
         <Confirmation
@@ -879,7 +886,10 @@
         }
         />
 {/if}
-
+<IconsLinks
+linkValue={`articles/${slug}`}
+linkLibelle='Article côté visiteur'
+/>
 {#if !itemToEdit}
     <ButtonsCancelConfirm 
     whichComponent='creatingArticle'

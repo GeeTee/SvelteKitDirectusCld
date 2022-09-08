@@ -15,7 +15,7 @@
         <p>banner public_id : {item?.cld_public_id}</p>
     </div>
     <div class="content">
-        {#if  item?.blocks.length > 0}
+        {#if  item?.blocks?.length > 0}
             {#each item?.blocks as block}
                 <Content {block} />
             {/each}

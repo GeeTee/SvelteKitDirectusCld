@@ -1,7 +1,11 @@
 <script>
+    import {getContext} from 'svelte'
     import f from '$lib/helpers/scripts'
     export let thumbGallery = []
     export let fctImg = f.thumbImg
+    export let altText = null
+
+    $: alt = altText ? `${altText} sur ${getContext('siteName')}` : `${getContext('siteName')}`
 </script>
 
 {#if thumbGallery.length > 0}
@@ -11,7 +15,7 @@
         {#each thumbGallery as {public_id}}
             <li>
                 <div>
-                    <img src={fctImg(public_id)} alt="//TODO:">
+                    <img src={fctImg(public_id)} {alt}>
                 </div>
             </li>
         {/each}
