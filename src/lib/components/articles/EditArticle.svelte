@@ -795,7 +795,7 @@
 
 
     {#if $parts.length > 0}
-    <span class="tag is-info">Nombre de blocks : {$parts.length}</span>
+        <span class="tag is-info mb-1">Nombre de blocks : {$parts.length}</span>
     
         {#each $parts as block}
             <Block 
@@ -813,12 +813,13 @@
             on:save-new-block={saveNewBlock}
             />
     {:else if $parts.length === 0 && itemToEdit }
-            <Block
-            updateBlock={true} 
-            creatingBlock={true}
-            newMoreBlockInfo='Ajouter un premier block'
-            on:save-new-block={saveNewBlock}
-            />
+        <span class="tag is-warning mb-1">Nombre de blocks : 0</span>
+        <Block
+        updateBlock={true} 
+        creatingBlock={true}
+        newMoreBlockInfo='Ajouter un premier block'
+        on:save-new-block={saveNewBlock}
+        />
     {/if}
 
     {#if editGallery}
