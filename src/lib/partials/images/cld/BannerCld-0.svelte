@@ -1,14 +1,12 @@
 <script>
     import { fade } from 'svelte/transition';
     import { cubicInOut } from 'svelte/easing';
-    import f from '$lib/helpers/scripts'
 
     export let alt = ''
     export let width = '1500'
-    export let cld_public_id = ''
 
-    const {srcJpg, srcWebP} = f.createSrcJpgSrcWebp(cld_public_id)
-    // console.log('expected bannerCldFull', srcJpg, srcWebP)
+    export let srcJpg = []
+    export let srcWebP = []
 </script>
 <picture>
   <source type="image/webp"
@@ -44,17 +42,3 @@
     >
 
 </picture>
-
-<style lang="scss">
-  picture {
-    background-color: #213409;
-    width: 100%;
-    img {
-      object-fit: cover;
-      pointer-events: none;
-      width: 100%;
-      height: auto;
-      mix-blend-mode: overlay;    
-    }
-  }
-</style>

@@ -1,17 +1,14 @@
 <script>
   import { getContext } from "svelte";
   import { onMount } from "svelte";
+  import f from '$lib/helpers/scripts'
   import Banner from '$lib/partials/images/cld/BannerCldFull.svelte'
 
   export let heading = 'Header title'
   export let slogan = null
-  export let banner = true
+  export let bannerId = null // cld_public_id
 
-  export let srcJpg = []
-  export let srcWebP = []
 
-  // const getImgSrc = getContext('getImgSrc')
-  // const key = 'banner-1800x1300-jpeg'
   let header
   let offsetH
   let y
@@ -43,8 +40,8 @@
          <h2 class="subtitle mb-1">{@html slogan}</h2>
     {/if}
   </hgroup>
-  {#if banner}
-     <Banner {srcJpg} {srcWebP} />
+  {#if bannerId}
+     <Banner cld_public_id={bannerId} />
   {/if}
   <!-- <a class="gt-anchor" href="#level-main-content"><i class="fa fa-angle-double-down" aria-hidden="true"></i> {offsetH}</a> -->
   <button class="gt-anchor" on:click={goToMain}><i class="fa fa-angle-double-down" aria-hidden="true"></i></button>

@@ -23,10 +23,16 @@ const checkAuthentif = (beA, isA, href) => {
 }
 
 const slashToUnderscore = (str) => {
+  if (typeof str !== 'string') {
+    return
+  }
   return str.replace(/\//g, "_");
 }
 
 const underscoreToSlash = (str) => {
+  if (typeof str !== 'string') {
+    return
+  }
   return str.replace(/\_/g, '/');
 }
 
@@ -55,6 +61,37 @@ const definitiveDeletingBanner = (bupSlugId, cldSlugId, arr) => {
 }
     
 // cloudinary
+const createSrcJpgSrcWebp = (id) => {
+  if (typeof id !== 'string') {
+    return
+  }
+  console.log('createSrcJpgSrcWebp', {id})
+  const sizes = [200, 400, 600, 800, 1000, 1200, 1400, 1600]
+  const l = sizes.length
+
+    const srcJpg = []
+    const srcWebP = []
+    let srcJ = ''
+    let srcW = ''
+
+    for (let i = 0; i < l; i++) {
+        srcJ = `https://res.cloudinary.com/geeteeimages/image/upload/c_scale,w_${sizes[i]},q_auto,f_jpg/${id}`
+        srcJpg.push(srcJ)
+    }
+
+    console.log('createSrcJpgSrcWebp',{srcJpg})
+
+    for (let i = 0; i < l; i++) {
+        srcW = `https://res.cloudinary.com/geeteeimages/image/upload/c_scale,w_${sizes[i]},q_auto,f_webp/${id}`
+        srcWebP.push(srcW)
+    }
+
+    console.log('createSrcJpgSrcWebp',{srcWebP})
+
+    return {srcJpg, srcWebP}
+
+}
+
 const imgSquareW = (w, public_id) => {
     return `https://res.cloudinary.com/geeteeimages/image/upload/ar_1,c_thumb,q_auto,w_${w},h_${w}/${public_id}`
 }
@@ -95,6 +132,7 @@ const scriptsServices = {
     condensifyPhone,
     checkAuthentif,
     definitiveDeletingBanner,
+    createSrcJpgSrcWebp,
     imgNoDim,
     imgSquareW,
     bannerResizeWH,
