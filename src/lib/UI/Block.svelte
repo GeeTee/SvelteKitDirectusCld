@@ -362,23 +362,6 @@
             {newMoreBlockInfo}
         {/if}
         </HtmlO>
-        <!-- <div class="container">
-            <div>
-                <Content {block} />
-            </div>
-            <div>
-            <Actions
-            is-size-4
-            creating={creatingBlock}
-            deleting={deletingBlock}
-            fctDel={enableModalToDelete}
-            fct={() => {
-                isEdited = true
-                console.log('open block', {block})
-            }}
-            />
-            </div>
-        </div> -->
 
         <Confirmation
         {openModal}
