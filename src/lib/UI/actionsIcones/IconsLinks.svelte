@@ -14,28 +14,6 @@ async function goToLogOut() {
 }
 </script>
 
-<style>
-	.icons-links {
-		align-items: center;
-		color: tomato;
-		display: flex;
-		/* justify-content: flex-end; */
-	}
-	.icons-links:hover {
-		cursor: pointer;
-	}
-    .to-label,
-    .back-label {
-        color: dodgerblue;
-    }
-    .to-label {
-        margin-right: .5rem;
-    }
-    .back-label {
-        margin-left: .5rem;
-    }
-</style>
-
 {#if linkDirection === "back"}
      <span class="icons-links" on:click={backToPage}><i class="fas fa-long-arrow-alt-left"></i> <span class="back-label">
         {#if linkLibelle}
@@ -101,3 +79,25 @@ async function goToLogOut() {
          <i class="fas fa-sign-in-alt"></i>
         </span>
 {/if}
+
+<style>
+	.icons-links {
+		align-items: center;
+		color: tomato;
+		display: flex;
+		/* justify-content: flex-end; */
+	}
+	.icons-links:hover {
+		cursor: pointer;
+	}
+    .to-label,
+    .back-label {
+        color: dodgerblue;
+    }
+    .to-label {
+        margin-right: .5rem;
+    }
+    .back-label {
+        margin-left: .5rem;
+    }
+</style>

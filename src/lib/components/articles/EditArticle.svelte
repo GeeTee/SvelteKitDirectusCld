@@ -47,6 +47,12 @@
     }
     const croppingAspectRatio = 1.385
 
+    // VARS ICONLINKS
+    // linkValue dans if itemToEdit
+    let linkValue = ''
+    const linkLibelle = 'Article pubié'
+    const linkDirection = 'to'
+
     // VARS NOTIFICATIONS
     const headingNotifItemToEditDefault = 'ici, vous pouvez'
     const textNotifItemToEditDefault = `
@@ -125,6 +131,7 @@
         id = itemToEdit.id
         title = itemToEdit.title
         slug = itemToEdit.slug
+        linkValue = `articles/${slug}`
         main_text = itemToEdit.main_text
         slug = itemToEdit.slug
         if (itemToEdit.blocks) {
@@ -611,10 +618,14 @@
         />
     {/if}
 
+    <div class="is-flex is-justify-content-flex-end notification">
     <IconsLinks
-    linkValue={`articles/${slug}`}
-    linkLibelle='Article côté visiteur'
+    {linkValue}
+    {linkLibelle}
+    {linkDirection}
     />
+    </div>
+
     <h2 class="subtitle is-uppercase is-size-5 has-text-primary">Éléments indispensables</h2>
     {#if editTitle}
         <TextInput
@@ -886,10 +897,15 @@
         }
         />
 {/if}
+
+<div class="is-flex is-justify-content-flex-end notification">
 <IconsLinks
-linkValue={`articles/${slug}`}
-linkLibelle='Article côté visiteur'
+{linkValue}
+{linkLibelle}
+{linkDirection}
 />
+</div>
+
 {#if !itemToEdit}
     <ButtonsCancelConfirm 
     whichComponent='creatingArticle'
