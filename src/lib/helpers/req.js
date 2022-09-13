@@ -18,6 +18,7 @@ const getAllArticles = async () => {
                         cld_public_id
                         blocks
                         gallery_photos
+                        gallery_videos
                         main_text
                         project
                     }

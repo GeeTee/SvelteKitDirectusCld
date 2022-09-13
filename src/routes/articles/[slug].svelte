@@ -9,7 +9,7 @@
     const {slug} = $page.params 
     const item = $ar.filter(item => item.slug === slug)[0]
     console.log('expected item in slug adv art', {item})
-    const {title, cld_public_id, main_text, blocks, gallery_photos} = item
+    const {title, cld_public_id, main_text, blocks, gallery_photos, gallery_videos} = item
 </script>
 {#if item}
 <article>
@@ -30,17 +30,32 @@
         {/if}
     </div>
     <hr>
-    <div class="gallery">
-        {#if gallery_photos !== null && gallery_photos?.length > 0}
-             {#each gallery_photos as {public_id, width, height}}
-                 <ul>
-                    <li>public_id: {public_id}</li>
-                    <li> width: {width}</li>
-                    <li>height: {height}</li>
-                 </ul>
-             {/each}
-        {/if}
+    
+    {#if gallery_photos !== null && gallery_photos?.length > 0}
+    <div class="gallery block">
+        <h2 class="subtitle">Galerie Photos</h2>
+        {#each gallery_photos as {public_id, width, height}}
+            <ul>
+            <li>public_id: {public_id}</li>
+            <li> width: {width}</li>
+            <li>height: {height}</li>
+            </ul>
+        {/each}
     </div>
+    {/if}
+
+    {#if gallery_videos !== null && gallery_videos?.length > 0}
+        <div class="gallery block">
+            <h2 class="subtitle">Galerie Vidéos</h2>
+            {#each gallery_videos as {url, title}}
+                <ul>
+                <li>title: {title}</li>
+                <li> url: {url}</li>
+                </ul>
+            {/each}
+        </div>
+    {/if}
+    
 </article>
 {:else}
     Erreur pas de adv articles

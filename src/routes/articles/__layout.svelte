@@ -10,10 +10,10 @@
     }
 </script>
 <script>
-    import a from '$lib/stores/articlesStore'
+    import ar from '$lib/stores/articlesStore'
     export let items = []
     // console.log('expected articles : ', {items})
-    a.setArticles(items)
+    ar.setArticles(items)
 </script>
 <div class="container">
     <slot />
