@@ -4,7 +4,7 @@
     const sizes = [200, 400, 600, 800, 1000, 1200, 1400, 1600]
     const l = sizes.length
 
-    const public_id = 'Actibenne/banners/actibenn-terrassement-assainissement-47'
+    const public_id = 'Actibenne/banners/terrasement-par-actibenne'
 
 </script>
 <article>
