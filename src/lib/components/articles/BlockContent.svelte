@@ -1,5 +1,6 @@
 <script>
     import f from '$lib/helpers/scripts'
+    import Youtube from '$lib/partials/videos/Youtube.svelte';
     export let block = {}
 </script>
 
@@ -49,6 +50,10 @@
                         <div class="pr-4">{@html block?.text}</div>
                     </div>
                 {/if}
+            {/if}
+            {#if block?.video_url}
+            <h2 class="subtitle">{block?.video_title}</h2>
+                <Youtube video_url={block.video_url} />
             {/if}
         {/if}
         {#if !block?.text && block?.image}

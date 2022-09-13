@@ -5,6 +5,7 @@
 
     import Content from '$lib/components/articles/BlockContent.svelte' 
     import Banner from '$lib/partials/images/cld/BannerCld.svelte';
+    import Youtube from '$lib/partials/videos/Youtube.svelte';
 
     const {slug} = $page.params 
     const item = $ar.filter(item => item.slug === slug)[0]
@@ -47,12 +48,14 @@
     {#if gallery_videos !== null && gallery_videos?.length > 0}
         <div class="gallery block">
             <h2 class="subtitle">Galerie Vidéos</h2>
+            <ul>
             {#each gallery_videos as {url, title}}
-                <ul>
-                <li>title: {title}</li>
-                <li> url: {url}</li>
-                </ul>
+                <li class="block">
+                    <h3 class="subtitle">{title}</h3>
+                    <Youtube video_url={url} />
+                </li>
             {/each}
+            </ul>
         </div>
     {/if}
     

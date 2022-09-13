@@ -8,7 +8,6 @@
     import ImagUpload from '$lib/partials/images/cld/ImageUploadCld.svelte'
     import Content from '$lib/components/articles/BlockContent.svelte'
     import HtmlO from "$lib/UI/EditableHtml-0.svelte";
-    import Actions from '$lib/UI/ActionComponent.svelte'
     import Confirmation from '$lib/UI/ConfirmationActionLite.svelte'
 
     const dispatch = createEventDispatcher();

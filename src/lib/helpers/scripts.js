@@ -59,6 +59,16 @@ const definitiveDeletingBanner = (bupSlugId, cldSlugId, arr) => {
     deleteOneImg(bupSlugId) // delete l'imag de itemToEdit et enrgistrée et sur cld
   }
 }
+
+// Youtube
+const getEmbedUrlYoutube = (url) => {
+  if (typeof url !== 'string') {
+    return
+  }
+  // const id = url.split('=')[1]
+  // console.log('getEmbedUrlYoutube', {id}, {url})
+  return `https://www.youtube.com/embed/${url.split('=')[1]}`
+}
     
 // cloudinary
 const createSrcJpgSrcWebp = (id) => {
@@ -131,6 +141,7 @@ const deleteAllImgsFromArray = async (array) => {
 const scriptsServices = {
     condensifyPhone,
     checkAuthentif,
+    getEmbedUrlYoutube,
     definitiveDeletingBanner,
     createSrcJpgSrcWebp,
     imgNoDim,
