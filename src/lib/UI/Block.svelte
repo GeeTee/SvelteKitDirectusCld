@@ -8,6 +8,7 @@
     import ImagUpload from '$lib/partials/images/cld/ImageUploadCld.svelte'
     import Content from '$lib/components/articles/BlockContent.svelte'
     import HtmlO from "$lib/UI/EditableHtml-0.svelte";
+    import EditVideo from '$lib/partials/videos/EditVideo.svelte';
     import Confirmation from '$lib/UI/ConfirmationActionLite.svelte'
 
     const dispatch = createEventDispatcher();
@@ -31,6 +32,8 @@
     let image_width = ''
     let image_height = ''
     let image_position = ''
+    let video_title = null 
+    let video_url = null
 
     // VARS CONFIRMATIONS
     let openModal = false
@@ -41,12 +44,33 @@
     if (block) {
         blockBup = {...block}
         id = block.id
-        title = block.title
-        text = block.text
-        image = block.image
-        image_width = block.image_width
-        image_height = block.image_height
-        image_position = block.image_position
+        
+        if (block.title) {
+           title = block.title 
+        }
+        
+        if (block.text) {
+           text = block.text 
+        }
+        
+        if (block.image) {
+            image = block.image
+            if (block.image_width) {
+                image_width = block.image_width
+            }
+            if (block.image_height) {
+                image_height = block.image_height
+            }
+            if (block.image_position) {
+                image_position = block.image_position
+            }
+        }
+        if (block.video_url) {
+           video_url = block.video_url 
+           if (block.video_title) {
+            video_title = block.video_title
+           }
+        }
     } 
 
     const croppingAspectRatio = 1
@@ -92,6 +116,12 @@
         const {selected} = e.detail
         console.log('getSelectedImgPosition ds block', {selected})
         image_position = selected
+    }
+
+    const saveVideo = (e) => {
+        console.log('saveVideo Block', e.detail)
+        video_title = e.detail.video_title
+        video_url = e.detail.video_url
     }
 
     const saveBlock = () => {
@@ -187,6 +217,39 @@
 
         }
 
+        //TODO: MANAGING VIDEO
+        if (blockBup.video_url) {
+            if (video_url) {
+                if (blockBup.video_url !== video_url) {
+                    blockWithChanges.video_url = video_url
+                    if (video_title) {
+                        blockWithChanges.video_title = video_title
+                    }
+                }
+                if (blockBup.video_url === video_url) {
+                    blockWithChanges.video_url = blockBup.video_url
+                    if (video_title) {
+                        blockWithChanges.video_title = video_title
+                    }
+                }
+
+                // if (blockBup.video_title !== video_title) {
+                //     blockWithChanges.video_title = video_title
+                // }
+                // if (blockBup.video_title === video_title) {
+                //     blockWithChanges.video_title = blockBup.video_title
+                // }
+            }
+        }
+        if (!blockBup.video_url) {
+            if (video_url) {
+                blockWithChanges.video_url = video_url
+                if (video_title) {
+                    blockWithChanges.video_title = video_title
+                }
+            }
+        }
+
         console.log(('saveBlock'), {blockWithChanges})
 
         dispatch('update-block', {blockWithChanges})
@@ -273,6 +336,7 @@
                 controlType="textarea"
                 bind:value={text}
                 />
+
             <div class="columns">
                 <div class="column">
                     {#if image}
@@ -294,7 +358,7 @@
                         on:delete-img={deleteIllustration}
                         />
                     {:else}
-                        <span class="label">Image illustrant ce block</span>
+                        <span class="label">Ajouter une image à ce block</span>
                         <ImagUpload 
                         buttonText='Choisir' 
                         {croppingAspectRatio}
@@ -320,8 +384,15 @@
                         text='par défaut : image à gauche du texte' 
                         />
                     {/if}
-                    
                 </div>
+            </div>
+
+            <div>
+                <EditVideo 
+                {video_url} 
+                {video_title} 
+                on:save-video={saveVideo}
+                />
             </div>
 
             <div class="buttons">
@@ -380,10 +451,4 @@
      <Content {block} />
 {/if}
 
-<style lang="scss">
-    .container {
-        align-items: center;
-        display: flex;
-        justify-content: space-between;
-    }
-</style>
+

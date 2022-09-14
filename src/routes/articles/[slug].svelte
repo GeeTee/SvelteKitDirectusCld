@@ -49,10 +49,10 @@
         <div class="gallery block">
             <h2 class="subtitle">Galerie Vidéos</h2>
             <ul>
-            {#each gallery_videos as {url, title}}
+            {#each gallery_videos as {video_url, video_title}}
                 <li class="block">
-                    <h3 class="subtitle">{title}</h3>
-                    <Youtube video_url={url} />
+                    <h3 class="subtitle">{video_title}</h3>
+                    <Youtube {video_url} />
                 </li>
             {/each}
             </ul>

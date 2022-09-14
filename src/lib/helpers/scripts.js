@@ -75,7 +75,7 @@ const createSrcJpgSrcWebp = (id) => {
   if (typeof id !== 'string') {
     return
   }
-  console.log('createSrcJpgSrcWebp', {id})
+  // console.log('createSrcJpgSrcWebp', {id})
   const sizes = [200, 400, 600, 800, 1000, 1200, 1400, 1600]
   const l = sizes.length
 
@@ -89,14 +89,14 @@ const createSrcJpgSrcWebp = (id) => {
         srcJpg.push(srcJ)
     }
 
-    console.log('createSrcJpgSrcWebp',{srcJpg})
+    // console.log('createSrcJpgSrcWebp',{srcJpg})
 
     for (let i = 0; i < l; i++) {
         srcW = `https://res.cloudinary.com/geeteeimages/image/upload/c_scale,w_${sizes[i]},q_auto,f_webp/${id}`
         srcWebP.push(srcW)
     }
 
-    console.log('createSrcJpgSrcWebp',{srcWebP})
+    // console.log('createSrcJpgSrcWebp',{srcWebP})
 
     return {srcJpg, srcWebP}
 

@@ -8,7 +8,7 @@
     export let cld_public_id = ''
 
     const {srcJpg, srcWebP} = f.createSrcJpgSrcWebp(cld_public_id)
-    console.log('expected bannerCldFull', srcJpg, srcWebP)
+    // console.log('expected bannerCldFull', srcJpg, srcWebP)
 </script>
 <picture>
   <source type="image/webp"

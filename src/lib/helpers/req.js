@@ -29,7 +29,7 @@ const getAllArticles = async () => {
 
     const {data: {advanced_articles}} = await res.json()
     const items = advanced_articles
-    console.log('req getAllArticles', {items})
+    // console.log('req getAllArticles', {items})
     return items
 }
 
@@ -86,7 +86,7 @@ const getTestSlug = async (slug) => {
 
     const {data: {test}} = await res.json()
     const item = test[0]
-    console.log('req getTestSlug', {item})
+    // console.log('req getTestSlug', {item})
     return item    
 }
 

@@ -9,7 +9,6 @@
     import f from '$lib/helpers/scripts'
 
     import TextInput from "$lib/UI/TextInput.svelte";
-    import Html from "$lib/UI/EditableHtml.svelte";
     import HtmlO from "$lib/UI/EditableHtml-0.svelte";
     import Block from "$lib/UI/Block.svelte";
     import ImagUpload from '$lib/partials/images/cld/ImageUploadCld.svelte'
@@ -496,6 +495,33 @@
                 blocks[idx].image_width = blockWithChanges.image_width
                 blocks[idx].image_height = blockWithChanges.image_height
                 blocks[idx].image_position = blockWithChanges.image_position
+            }        
+        }
+
+        // MANAGING VIDEO
+        if (blocks[idx].video_url) { // ON A UN VIDEO ANCIENNE
+            if (blockWithChanges.video_url) { // ON A UN NOUVEAU VIDEO 
+                if (blocks[idx].video_url !== blockWithChanges.video_url) { // VIDEOS DIFFÉRENTS
+                    blocks[idx].video_url = blockWithChanges.video_url
+                    if (blockWithChanges.video_title) {
+                        blocks[idx].video_title = blockWithChanges.video_title
+                    }
+                }
+            }
+            // PAS DE NOUVEAU VIDEO
+            if (!blockWithChanges.video_url) { // ON A PAS UN NOUVEAU VIDEO ON ENLEVE
+                delete blocks[idx].video_url
+                delete blocks[idx].video_title
+            }
+
+        }
+
+        if (!blocks[idx].video_url) { // PAS DE VIDEO ANCIENNE ON EN AJOUTE UNE NOUVELLE
+            if (blockWithChanges.video_url) {
+                blocks[idx].video_url = blockWithChanges.video_url
+                if (blockWithChanges.video_title) {
+                    blocks[idx].video_title = blockWithChanges.video_title
+                }
             }        
         }
 
