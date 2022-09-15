@@ -506,12 +506,25 @@
                     if (blockWithChanges.video_title) {
                         blocks[idx].video_title = blockWithChanges.video_title
                     }
+                    if (blockWithChanges.video_position) {
+                        blocks[idx].video_position = blockWithChanges.video_position
+                    }
+                }
+                if (blocks[idx].video_url === blockWithChanges.video_url) { // VIDEOS ÉGALES
+                    // blocks[idx].video_url = blockWithChanges.video_url
+                    if (blockWithChanges.video_title && blockWithChanges.video_title !== blocks[idx].video_title) {
+                        blocks[idx].video_title = blockWithChanges.video_title
+                    }
+                    if (blockWithChanges.video_position && blockWithChanges.video_position !== blocks[idx].video_position) {
+                        blocks[idx].video_position = blockWithChanges.video_position
+                    }
                 }
             }
             // PAS DE NOUVEAU VIDEO
             if (!blockWithChanges.video_url) { // ON A PAS UN NOUVEAU VIDEO ON ENLEVE
                 delete blocks[idx].video_url
                 delete blocks[idx].video_title
+                delete blocks[idx].video_position
             }
 
         }
@@ -521,6 +534,9 @@
                 blocks[idx].video_url = blockWithChanges.video_url
                 if (blockWithChanges.video_title) {
                     blocks[idx].video_title = blockWithChanges.video_title
+                }
+                if (blockWithChanges.video_position) {
+                    blocks[idx].video_position = blockWithChanges.video_position
                 }
             }        
         }

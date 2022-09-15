@@ -1,23 +1,32 @@
 <script>
     import {createEventDispatcher} from 'svelte'
-    import Modal from '$lib/UI/Modal.svelte'
     import Button from '$lib/UI/Button.svelte'
-    import Youtube from "$lib/partials/videos/Youtube.svelte";
+    import Youtube from "$lib/partials/videos/Youtube.svelte"
+    import Modal from '$lib/partials/videos/ModalVideo.svelte';
 
     export let video_title = null
     export let video_url = null
+    export let video_position = null
 
     const dispatch = createEventDispatcher();
 
-    $: videoTitle = video_title ? video_title : ''
-    $: videoUrl = video_url ? video_url : ''
+    // $: videoTitle = video_title ? video_title : ''
+    // $: videoUrl = video_url ? video_url : ''
+    // $: videoPosition = video_position ? video_position : ''
 
-    $: videoTitleValid = videoTitle !== '' ? true : false
-    $: videoUrlValid = videoUrl !== '' ? true : false
-    $:enabled = videoUrlValid
+    // $: video_titleValid = true
+    // $: video_urlValid = true
+    // $: video_positionValid = true
+    // $:enabled = video_urlValid
 
     let openModal = false
     $: modalTitle = video_url ? 'Modifier le titre ou le lien de vidéo' : 'Ajouter une vidéo'
+
+    // const getSelectedVideoPosition = (e) => {
+    //     const {selected} = e.detail
+    //     console.log('getSelectedVideoPosition ds block', {selected})
+    //     videoPosition = selected       
+    // }
 
     const closeModale = () => {
         openModal = false
@@ -25,34 +34,46 @@
     }
 
     const editVideo = () => {
-        // console.log('editVideo //TODO:')
         openModal = true
     }
-    
-    const savingVideo = () => {
-        console.log('savingVideo EditVideo', {videoTitle}, {videoUrl})
-        if (videoTitleValid) {
-            video_title = videoTitle
+
+    $: console.log('console.log in EditVideo', {video_url})
+    let videoInfos = {}
+    const getVideoInfos = async (e) => {
+        console.log('getVideoInfos EditVidéo 1', e.detail)
+        videoInfos = await e.detail 
+        console.log('getVideoInfos EditVidéo 2', {videoInfos})
+        if (videoInfos.video_title !== video_title) {
+            video_title = videoInfos.video_title
         }
-        if (!videoTitleValid) {
-            video_title = null
+        if (videoInfos.video_url !== video_url) {
+            video_url = videoInfos.video_url
         }
-        if (videoUrlValid) {
-            video_url = videoUrl
+        if (videoInfos.video_position !== video_position) {
+            video_position = videoInfos.video_position
         }
-        if (!videoUrlValid) {
-            video_url = null
-        }
-        dispatch('save-video', {video_title, video_url})
-        openModal = false
+        console.log('getVideoInfos EditVidéo 3', {video_title}, {video_url}, {video_position})
+        dispatch('save-video', {
+            video_title,
+            video_url,
+            video_position
+        })
     }
 </script>
-component Edit vidéo
+component Edit vidéo : {video_url}
 {#if video_url}
     {#if video_title}
         <span class="label">{video_title}</span>
     {/if}
-    <Youtube {video_url} />
+
+    {#if videoInfos.video_url}
+        <Youtube video_url={videoInfos.video_url} title={video_title} />
+    {/if}
+
+    {#if !videoInfos.video_url}
+        <Youtube {video_url} title={video_title} />
+    {/if}
+    
 {/if}
 
 {#if !video_url}
@@ -83,50 +104,12 @@ component Edit vidéo
     {/if}
 </div>
 {#if openModal}
-    <Modal 
-    title={modalTitle}
-    on:cancelMod={closeModale}
-    >
-    <div class="notification is-info">
-        <div class="field">
-            <label for="video-title" class="label">titre de la vidéo (optionnel)</label>
-            <div class="control">
-                <input 
-                id="video-title" 
-                class="input" 
-                class:is-danger={!videoTitleValid}
-                class:is-success={videoTitleValid}
-                type="text" 
-                placeholder="Recopier ici" 
-                bind:value={videoTitle}
-                >
-            </div>
-        </div> 
-        <div class="field">
-            <label for="video-url" class="label">Url de la vidéo</label>
-            <div class="control">
-                <input 
-                id="video-url" 
-                class="input" 
-                class:is-danger={!videoUrlValid}
-                class:is-success={videoUrlValid}
-                type="text" 
-                placeholder="Recopier ici" 
-                bind:value={videoUrl}
-                >
-            </div>
-        </div>     
-    </div>
-    <div class="buttons">
-        <Button
-        is-info
-        is-outlined
-        {enabled}
-        fct={savingVideo}
-        >
-            <span class="icon is-small"><i class="fas fa-film"></i></span>
-            <span>Enregistrer</span>
-        </Button>
-    </div>
-    </Modal>
+<Modal
+title={modalTitle}
+{video_title}
+{video_url}
+{video_position}
+on:save-video={getVideoInfos}
+on:cancelMod={closeModale}
+/>
 {/if}

@@ -34,6 +34,7 @@
     let image_position = ''
     let video_title = null 
     let video_url = null
+    let video_position = null
 
     // VARS CONFIRMATIONS
     let openModal = false
@@ -69,6 +70,9 @@
            video_url = block.video_url 
            if (block.video_title) {
             video_title = block.video_title
+           } 
+           if (block.video_position) {
+            video_position = block.video_position
            }
         }
     } 
@@ -122,11 +126,15 @@
         console.log('saveVideo Block', e.detail)
         video_title = e.detail.video_title
         video_url = e.detail.video_url
+        video_position = e.detail.video_position
+        // block.video_title = video_title
+        // block.video_url = video_url
+        // block.video_position = video_position
     }
 
     const saveBlock = () => {
         if (block) {
-        console.log(('saveBlock updating block'), {id})
+        console.log(('saveBlock updating block'), {blockBup})
         const blockWithChanges = {
             id,
         }
@@ -219,11 +227,15 @@
 
         //TODO: MANAGING VIDEO
         if (blockBup.video_url) {
+            console.log('on a un vidéo ancienne')
             if (video_url) {
                 if (blockBup.video_url !== video_url) {
                     blockWithChanges.video_url = video_url
                     if (video_title) {
                         blockWithChanges.video_title = video_title
+                    }
+                    if (video_position) {
+                        blockWithChanges.video_position = video_position
                     }
                 }
                 if (blockBup.video_url === video_url) {
@@ -231,26 +243,28 @@
                     if (video_title) {
                         blockWithChanges.video_title = video_title
                     }
+                    if (video_position) {
+                        blockWithChanges.video_position = video_position
+                    }
                 }
-
-                // if (blockBup.video_title !== video_title) {
-                //     blockWithChanges.video_title = video_title
-                // }
-                // if (blockBup.video_title === video_title) {
-                //     blockWithChanges.video_title = blockBup.video_title
-                // }
+                console.log('on a une vidéo ancienne \n on la remplace', {video_url}, {video_title}, {video_position})
             }
         }
         if (!blockBup.video_url) {
+            console.log('on a pas de vidéo ancienne')
             if (video_url) {
                 blockWithChanges.video_url = video_url
                 if (video_title) {
                     blockWithChanges.video_title = video_title
                 }
+                if (video_position) {
+                    blockWithChanges.video_position = video_position
+                }
+                console.log('on a pas de vidéo ancienne \n on en ajoute une', {video_url}, {video_title}, {video_position})
             }
         }
 
-        console.log(('saveBlock'), {blockWithChanges})
+        console.log(('saveBlock updating Block'), {blockWithChanges})
 
         dispatch('update-block', {blockWithChanges})
         isEdited = false
@@ -275,6 +289,15 @@
 
             if (text !== '' && image !== '' && image_position !== '') {
                 blockCreated.image_position = image_position
+            }
+            if (video_url) {
+                blockCreated.video_url = video_url
+                if (video_title) {
+                    blockCreated.video_title = video_title
+                }
+                if (video_position) {
+                    blockCreated.video_position = video_position
+                }
             }
             blockCreated = {
                 id: Date.now(),
@@ -391,6 +414,7 @@
                 <EditVideo 
                 {video_url} 
                 {video_title} 
+                {video_position} 
                 on:save-video={saveVideo}
                 />
             </div>
