@@ -1,5 +1,5 @@
 <script>
-    import {createEventDispatcher} from 'svelte'
+    import {createEventDispatcher, onDestroy} from 'svelte'
     import Button from '$lib/UI/Button.svelte'
     import Youtube from "$lib/partials/videos/Youtube.svelte"
     import Modal from '$lib/partials/videos/ModalVideo.svelte';
@@ -10,23 +10,19 @@
 
     const dispatch = createEventDispatcher();
 
-    // $: videoTitle = video_title ? video_title : ''
-    // $: videoUrl = video_url ? video_url : ''
-    // $: videoPosition = video_position ? video_position : ''
-
-    // $: video_titleValid = true
-    // $: video_urlValid = true
-    // $: video_positionValid = true
-    // $:enabled = video_urlValid
-
     let openModal = false
+    let videoInfos = {} // UPDATING DELETING VIDEO
     $: modalTitle = video_url ? 'Modifier le titre ou le lien de vidéo' : 'Ajouter une vidéo'
 
-    // const getSelectedVideoPosition = (e) => {
-    //     const {selected} = e.detail
-    //     console.log('getSelectedVideoPosition ds block', {selected})
-    //     videoPosition = selected       
-    // }
+    onDestroy(
+        () => {
+            video_title = null
+            video_url = null
+            video_position = ''
+        }
+    )
+
+    // FUNCTIONS
 
     const closeModale = () => {
         openModal = false
@@ -37,8 +33,21 @@
         openModal = true
     }
 
+    const deleteVideo = () => { // out of edit mode for vidéo
+        console.log('deleteVideo 1', {video_title}, {video_url}, {video_position})
+        if (video_title) {
+            video_title = null
+        }
+        if (video_position) {
+            video_position = null
+        }
+        video_url = null
+        console.log('deleteVideo 2', {video_title}, {video_url}, {video_position})
+        dispatch('delete-video')
+    }
+
     $: console.log('console.log in EditVideo', {video_url})
-    let videoInfos = {}
+    
     const getVideoInfos = async (e) => {
         console.log('getVideoInfos EditVidéo 1', e.detail)
         videoInfos = await e.detail 
@@ -60,9 +69,13 @@
         })
     }
 </script>
-component Edit vidéo : {video_url}
+<span class="label">Gérer la vidéo</span>
 {#if video_url}
-    {#if video_title}
+    {#if videoInfos.video_title}
+        <span class="label">{videoInfos.video_title}</span>
+    {/if}
+
+   {#if !videoInfos.video_title && video_title}
         <span class="label">{video_title}</span>
     {/if}
 
@@ -77,7 +90,7 @@ component Edit vidéo : {video_url}
 {/if}
 
 {#if !video_url}
-    Ajouter une vidéo
+    <span class="has-text-info">Actuellement pas / plus de vidéo installée</span>
 {/if}
 <div class="buttons my-3">
     {#if video_url}
@@ -89,6 +102,15 @@ component Edit vidéo : {video_url}
         >
             <span class="icon is-small"><i class="fas fa-film"></i></span>
             <span>Modifications</span>
+        </Button>
+        <Button
+        is-danger
+        is-outlined
+        enabled={true}
+        fct={deleteVideo}
+        >
+            <span class="icon is-small"><i class="fas fa-film"></i></span>
+            <span>Détruire</span>
         </Button>
     {/if}
     {#if !video_url}
@@ -106,6 +128,7 @@ component Edit vidéo : {video_url}
 {#if openModal}
 <Modal
 title={modalTitle}
+closeButtonTitle='Abandonner'
 {video_title}
 {video_url}
 {video_position}

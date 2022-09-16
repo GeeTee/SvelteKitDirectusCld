@@ -512,11 +512,17 @@
                 }
                 if (blocks[idx].video_url === blockWithChanges.video_url) { // VIDEOS ÉGALES
                     // blocks[idx].video_url = blockWithChanges.video_url
-                    if (blockWithChanges.video_title && blockWithChanges.video_title !== blocks[idx].video_title) {
+                    if (blockWithChanges.video_title !== '' && blockWithChanges.video_title !== blocks[idx].video_title) {
                         blocks[idx].video_title = blockWithChanges.video_title
                     }
-                    if (blockWithChanges.video_position && blockWithChanges.video_position !== blocks[idx].video_position) {
+                    if (blockWithChanges.video_title === '' && blockWithChanges.video_title !== blocks[idx].video_title) {
+                        delete blocks[idx].video_title
+                    }
+                    if (blockWithChanges.video_position !== '' && blockWithChanges.video_position !== blocks[idx].video_position) {
                         blocks[idx].video_position = blockWithChanges.video_position
+                    }
+                    if (blockWithChanges.video_position === '' && blockWithChanges.video_position !== blocks[idx].video_position) {
+                        delete blocks[idx].video_position
                     }
                 }
             }
@@ -756,7 +762,7 @@
         <div>{@html itemToEdit ? main_text : '<span class="title">Rédigez votre texte</span>'}</div>
         </HtmlO>
     {/if}
-    <h2 class="subtitle is-uppercase is-size-5 has-text-info">Éléments complémentaires</h2>
+    <h2 class="subtitle is-uppercase is-size-5 has-text-info">Éléments complémentaires - optionnels</h2>
     {#if editBanner}
     <div class="banner-choice">
         <p class="label">Bannière</p>

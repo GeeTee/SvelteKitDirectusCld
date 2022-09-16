@@ -12,11 +12,11 @@
   export let video_url = ''
   export let video_position = ''
 
-  $: video_titleValid = (typeof video_title === 'string' && video_title !== '') ? true : false
+  $: video_titleValid = (typeof video_title === 'string' && video_title !== '') ? true : false 
   $: video_urlValid = (typeof video_url === 'string' && video_url !== '') ? true : false
 
   // BUTTON 
-  const enabled = true
+  // const enabled = 
 
   // SELECT
   const selectItems = [
@@ -61,7 +61,7 @@
               <input 
               id="video-title" 
               class="input" 
-              class:is-danger={!video_titleValid}
+              class:is-info={!video_titleValid}
               class:is-success={video_titleValid}
               type="text" 
               placeholder="Noter un titre" 
@@ -94,11 +94,14 @@
             </div>
         </div>
     </div>
+    {#if !video_position}
+       <span class="has-text-info mb-3">Si vous ne choisissez pas de position de la vidéo par rapport au text => elle sera installée automatiquement sous le texte</span>
+    {/if}
     <div class="buttons">
       <Button
       is-info
       is-outlined
-      {enabled}
+      enabled={video_urlValid}
       fct={savingVideo}
       >
           <span class="icon is-small"><i class="fas fa-film"></i></span>
@@ -110,7 +113,7 @@
     <slot name="footer">
       <Button 
       is-warning
-      {enabled}
+      enabled={true}
       fct={closeModal}
       >
         {closeButtonTitle}
@@ -153,6 +156,14 @@
 
   footer {
     padding: 1rem;
+  }
+
+  .buttons {
+    border-top: 1px solid transparent;
+  }
+
+  .has-text-info.mb-3 {
+    border-bottom: 1px solid transparent;
   }
 
   @media (min-width: 768px) {

@@ -132,6 +132,11 @@
         // block.video_position = video_position
     }
 
+    const deleteVideo = (e) => {
+        console.log('deleteVideo Block', e.detail)
+        video_url = null
+    }
+
     const saveBlock = () => {
         if (block) {
         console.log(('saveBlock updating block'), {blockBup})
@@ -226,10 +231,10 @@
         }
 
         //TODO: MANAGING VIDEO
-        if (blockBup.video_url) {
-            console.log('on a un vidéo ancienne')
-            if (video_url) {
-                if (blockBup.video_url !== video_url) {
+        if (blockBup.video_url) { // on a un vidéo ancienne
+            console.log('on a un vidéo ancienne : ', blockBup.video_url, 'nouvelle : ', {video_url})
+            if (video_url) { 
+                if (blockBup.video_url !== video_url) { // on la change
                     blockWithChanges.video_url = video_url
                     if (video_title) {
                         blockWithChanges.video_title = video_title
@@ -238,7 +243,7 @@
                         blockWithChanges.video_position = video_position
                     }
                 }
-                if (blockBup.video_url === video_url) {
+                if (blockBup.video_url === video_url) { // on change le title ou la position
                     blockWithChanges.video_url = blockBup.video_url
                     if (video_title) {
                         blockWithChanges.video_title = video_title
@@ -416,6 +421,7 @@
                 {video_title} 
                 {video_position} 
                 on:save-video={saveVideo}
+                on:delete-video={deleteVideo}
                 />
             </div>
 

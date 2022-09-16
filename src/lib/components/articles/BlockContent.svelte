@@ -52,7 +52,9 @@
                 {/if}
             {/if}
             {#if block?.video_url}
-            <h2 class="subtitle">{block?.video_title}</h2>
+                {#if block?.video_title}
+                    <h2 class="subtitle">{block?.video_title}</h2>
+                {/if}
                 <Youtube video_url={block.video_url} />
             {/if}
         {/if}
