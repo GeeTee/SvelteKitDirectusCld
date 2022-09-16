@@ -482,11 +482,12 @@
                     blocks[idx].image_position = blockWithChanges.image_position
                 }
             }
-            // PAS DE NOUVEAU IMAGE
-            delete blocks[idx].image
-            delete blocks[idx].image_width
-            delete blocks[idx].image_height
-            delete blocks[idx].image_position
+            if (!blockWithChanges.image) { // ON A PAS UN NOUVEAU IMAGE 
+                delete blocks[idx].image
+                delete blocks[idx].image_width
+                delete blocks[idx].image_height
+                delete blocks[idx].image_position
+            }
         }
 
         if (!blocks[idx].image) { // PAS DE IMAGE ON EN AJOUTE UN

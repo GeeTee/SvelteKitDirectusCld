@@ -4,6 +4,7 @@ import f from '$lib/helpers/scripts'
 	export let title = 'YouTube video player'
     const src = f.getEmbedUrlYoutube(video_url)
     console.log('Youtube component', f.getEmbedUrlYoutube(video_url))
+    console.log('Youtube component isYouTube ::: ', f.isYouTube('https://www.youtube.com/watch?v=kpmTGFj_pX8'))
 </script>
 
 <div class="mediacontainer">

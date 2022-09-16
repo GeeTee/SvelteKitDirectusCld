@@ -112,8 +112,9 @@
     }
 
     const deleteIllustration = () => {
+        console.log('deleteIllustration image 1 : ', {image})
         image = ''
-        console.log('deleteIllustration image : ', {image})
+        console.log('deleteIllustration image 2 : ', {image})
     }
 
     const getSelectedImgPosition = (e) => {
@@ -127,13 +128,10 @@
         video_title = e.detail.video_title
         video_url = e.detail.video_url
         video_position = e.detail.video_position
-        // block.video_title = video_title
-        // block.video_url = video_url
-        // block.video_position = video_position
     }
 
     const deleteVideo = (e) => {
-        console.log('deleteVideo Block', e.detail)
+        console.log('deleteVideo Block')
         video_url = null
     }
 
@@ -322,20 +320,48 @@
 
     const cancelModifBlock = () => {
         if (block) {
-        title = blockBup.title
-        text = blockBup.text
-        image = blockBup.image
-        image_width = blockBup.image_width
-        image_height = blockBup.image_height
-        image_position = blockBup.image_position
+            if (blockBup.title) {
+                title = blockBup.title
+            }
+            if (blockBup.text) {
+                text = blockBup.text
+            }
+            if (blockBup.image) {
+                image = blockBup.image
+                if (blockBup.image_width) {
+                    image_width = blockBup.image_width
+                }
+                if (blockBup.image_height) {
+                    image_height = blockBup.image_height
+                }
+                if (blockBup.image_position) {
+                    image_position = blockBup.image_position
+                }
+            }
+            if (blockBup.video_url) {
+                video_url = blockBup.video_url
+                if (blockBup.video_title) {
+                    video_title = blockBup.video_title
+                }
+                if (blockBup.video_position) {
+                    video_position = blockBup.video_position
+                }
+            }
+        
+
         console.log('cancelModifBlock updating', {block})
         }
         if (!block) {
             block = {}
             title = ''
             text = ''
-            image = '' //TODO: delete image
+            image = ''
+            image_width = ''
+            image_height = ''
             image_position = ''
+            video_url = ''
+            video_title = ''
+            video_position = ''
             console.log('cancelModifBlock creating', {block})
         }
         isEdited = false
@@ -474,7 +500,8 @@
         }}
         on:leaving={
             () => openModal = false
-        } />
+        } 
+        />
     {/if}
 {/if}
 {#if !updateBlock}

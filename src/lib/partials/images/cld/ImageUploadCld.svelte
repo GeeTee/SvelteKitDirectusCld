@@ -4,6 +4,7 @@
     import f from '$lib/helpers/scripts'
 
     import Notification from '../../../UI/elements/Notification.svelte'; 
+    import Confirmation from '$lib/UI/ConfirmationActionLite.svelte'
 
     const dispatch = createEventDispatcher();
 
@@ -28,6 +29,13 @@
     export let dispatchTitle = 'get-avatar-public-id'
     export let dn = true
     export let text = 'Enregistrer pour garder vos modifications'
+
+    // VARS CONFIRMATION DELETE VIDEO
+    let openImgConfirm = false
+    const openingConfirmImgModal = () => {
+        console.log(('openingConfirmImgMal'))
+        openImgConfirm = true
+    }
 
     let isLoading = false
 
@@ -152,11 +160,24 @@
     <button 
     class="button is-danger" 
     class:is-outlined={isOutlined}
-    on:click={() => dispatch('delete-img')}
+    on:click={openingConfirmImgModal}
     >
     <span class="icon is-small"><i class="fas fa-camera-retro"></i></span>
     <span>{buttonTextDelete}</span>
     </button>
+    <Confirmation
+    openModal={openImgConfirm}
+    title={`Détruire la vidéo`}
+    phrase='détruire'
+    on:confirmation={() => {
+        console.log('delete-img')
+        dispatch('delete-img')
+        openImgConfirm = false
+    }}
+    on:leaving={
+        () => openImgConfirm = false
+    } 
+    />
     {/if}
 </div>
 <Notification

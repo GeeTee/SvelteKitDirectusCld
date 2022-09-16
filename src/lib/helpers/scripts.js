@@ -67,7 +67,21 @@ const getEmbedUrlYoutube = (url) => {
   }
   // const id = url.split('=')[1]
   // console.log('getEmbedUrlYoutube', {id}, {url})
-  return `https://www.youtube.com/embed/${url.split('=')[1]}`
+  const urlArr = isYouTube(url)
+  if (urlArr) {
+    return `https://www.youtube.com/embed/${urlArr[1]}`
+  }
+  return
+}
+
+const isYouTube = (str) => {
+  if (typeof str !== 'string') {
+    return
+  }
+  // console.log('isYouTube')
+  const regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+
+  return str.match(regex)
 }
     
 // cloudinary
@@ -142,6 +156,7 @@ const scriptsServices = {
     condensifyPhone,
     checkAuthentif,
     getEmbedUrlYoutube,
+    isYouTube,
     definitiveDeletingBanner,
     createSrcJpgSrcWebp,
     imgNoDim,
