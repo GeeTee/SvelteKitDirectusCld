@@ -41,20 +41,7 @@
         openModal = true
     }
 
-    // const deleteVideo = () => { // out of edit mode for vidéo
-    //     console.log('deleteVideo 1', {video_title}, {video_url}, {video_position})
-    //     if (video_title) {
-    //         video_title = null
-    //     }
-    //     if (video_position) {
-    //         video_position = null
-    //     }
-    //     video_url = null
-    //     console.log('deleteVideo 2', {video_title}, {video_url}, {video_position})
-    //     dispatch('delete-video')
-    // }
-
-    // $: console.log('console.log in EditVideo', {video_url})
+  
     
     const getVideoInfos = async (e) => {
         console.log('getVideoInfos EditVidéo 1', e.detail)
@@ -122,8 +109,8 @@
         enabled={true}
         fct={editVideo}
         >
-            <span class="icon is-small"><i class="fas fa-film"></i></span>
-            <span>Modificatier</span>
+            <span class="icon is-small"><i class="fas fa-wrench"></i></span>
+            <span>Modifier</span>
         </Button>
         <Button
         is-danger

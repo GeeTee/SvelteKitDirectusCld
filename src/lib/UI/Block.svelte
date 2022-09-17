@@ -4,7 +4,7 @@
     import TextInput from '$lib/UI/TextInput.svelte'
     import Button from '$lib/UI/Button.svelte'
     import Select from '$lib/UI/Select.svelte'
-    import Notification from '$lib/UI/elements/Notification.svelte'
+    import Notification from '$lib/UI/elements/NotificationMotion.svelte'
     import ImagUpload from '$lib/partials/images/cld/ImageUploadCld.svelte'
     import Content from '$lib/components/articles/BlockContent.svelte'
     import HtmlO from "$lib/UI/EditableHtml-0.svelte";
@@ -20,7 +20,7 @@
     export let newMoreBlockInfo = 'Créer un block'
 
     let isEdited = false
-    let showSavingWarning = false
+    // let showSavingWarning = false
     $: savingCreatingButtonText = creatingBlock ? 'Enregister' : 'Enregister la modif'
 
 
@@ -35,6 +35,12 @@
     let video_title = null 
     let video_url = null
     let video_position = null
+
+    const titleLabel = 'Titre du block <span class="has-text-info">(optionnel)</span>'
+    const redactionLabel = 'Texte <span class="has-text-info">(optionnel)</span>'
+
+    $: imagePositionEmpty = (image_position === '' || !image_position)? true : false
+    $: titleEmpty = (typeof title !== 'string' || title === '')? true : false
 
     // VARS CONFIRMATIONS
     let openModal = false
@@ -174,7 +180,7 @@
             }
         }
 
-        //TODO: MANANING ILLUSTRATION IMAGE
+        // MANANING ILLUSTRATION IMAGE
 
         console.log('saveBlock point img', {image}, 'blockBup.image :', blockBup.image)
 
@@ -375,69 +381,74 @@
                 <p>id: {id}</p>
             {/if}
             <TextInput
-                id="subtitle"
-                label="Titre du block"
-                type="text"
-                validityMessage="Entrez votre Titre"
-                controlType="input"
-                bind:value={title}
-                on:input={event => (title = event.target.value)} />
+            id="subtitle"
+            label={titleLabel}
+            type="text"
+            validityMessage="Entrez votre Titre"
+            controlType="input"
+            bind:value={title}
+            on:input={event => (title = event.target.value)} />
 
             <TextInput
-                id="redaction"
-                label="Rédaction"
-                validityMessage="Entrez votre Titre"
-                controlType="textarea"
-                bind:value={text}
-                />
+            id="redaction"
+            label={redactionLabel}
+            validityMessage="Entrez votre Titre"
+            controlType="textarea"
+            bind:value={text}
+            />
 
-            <div class="columns">
-                <div class="column">
-                    {#if image}
-                        <span class="label">Image illustrant ce block</span>
-                        <ImagUpload 
-                        cld_public_id={image} 
-                        {croppingAspectRatio} 
-                        buttonText='Remplacer'
-                        buttonTextDelete={`Détruire l'image`}
-                        isOutlined={true}
-                        imageInstalled={true} 
-                        showDeleteImg={true}
-                        uploadPreset='Actibenne_illustrations' 
-                        dispatchTitle='renew-illustration-id'
-                        dn={dnBanner}
-                        imgResize={f.imgSquareW}
-                        w=200
-                        on:renew-illustration-id={getIllustrationId}
-                        on:delete-img={deleteIllustration}
+            <div>
+                {#if image}
+                    <span class="label">Image illustrant ce block</span>
+                {:else}
+                    <span class="label">Ajouter une image à ce block <span class="has-text-info">(optionnel)</span></span>
+                {/if}
+                <div class="columns">
+                    <div class="column">
+                        {#if image}
+                            <ImagUpload 
+                            cld_public_id={image} 
+                            {croppingAspectRatio} 
+                            buttonText='Remplacer'
+                            buttonTextDelete={`Détruire l'image`}
+                            isOutlined={true}
+                            imageInstalled={true} 
+                            showDeleteImg={true}
+                            uploadPreset='Actibenne_illustrations' 
+                            dispatchTitle='renew-illustration-id'
+                            dn={dnBanner}
+                            imgResize={f.imgSquareW}
+                            w=200
+                            on:renew-illustration-id={getIllustrationId}
+                            on:delete-img={deleteIllustration}
+                            />
+                        {:else}
+                            <ImagUpload 
+                            buttonText='Choisir' 
+                            {croppingAspectRatio}
+                            isOutlined={true}
+                            uploadPreset='Actibenne_illustrations' 
+                            dispatchTitle='get-new-illustration-id'
+                            on:get-new-illustration-id={getIllustrationId}
+                            />
+                        {/if}
+                    </div>
+                    <div class="column">
+                        <span class="label">Position de l'image par rapport au texte</span>
+                        <Select 
+                        {selectItems} 
+                        selected={image_position}
+                        on:get-selected={getSelectedImgPosition}
                         />
-                    {:else}
-                        <span class="label">Ajouter une image à ce block</span>
-                        <ImagUpload 
-                        buttonText='Choisir' 
-                        {croppingAspectRatio}
-                        isOutlined={true}
-                        uploadPreset='Actibenne_illustrations' 
-                        dispatchTitle='get-new-illustration-id'
-                        on:get-new-illustration-id={getIllustrationId}
-                        />
-                    {/if}
-                </div>
-                <div class="column">
-                    <span class="label">Position de l'image par rapport au texte</span>
-                    <Select 
-                    {selectItems} 
-                    selected={image_position}
-                    on:get-selected={getSelectedImgPosition}
-                    />
-                    {#if image_position === '' || !image_position}
-                        <Notification 
-                        mt-3
-                        is-info
-                        is-light
-                        text='par défaut : image à gauche du texte' 
-                        />
-                    {/if}
+                        {#if imagePositionEmpty}
+                            <Notification 
+                            mt-3
+                            is-info
+                            is-light
+                            text='par défaut : image à gauche du texte' 
+                            />
+                        {/if}
+                    </div>
                 </div>
             </div>
 

@@ -13,7 +13,7 @@
 </script>
 
 <div class="field">
-  <label class="label" for={id}>{label}</label>
+  <label class="label" for={id}>{@html label}</label>
   <div class="control">
     {#if controlType === 'textarea'}
     <textarea class="textarea" class:invalid={!valid && touched} {rows} {id} {placeholder} bind:value on:blur="{() => touched = true}" />

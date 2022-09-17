@@ -30,6 +30,11 @@
     export let dn = true
     export let text = 'Enregistrer pour garder vos modifications'
 
+    const iconChange = '<i class="fas fa-exchange-alt"></i>'
+    const iconAdd = '<i class="fas fa-image"></i>'
+
+    $: iconAddChange = cld_public_id? `${iconChange}` : `${iconAdd}`
+
     // VARS CONFIRMATION DELETE VIDEO
     let openImgConfirm = false
     const openingConfirmImgModal = () => {
@@ -153,7 +158,7 @@
     class="button" 
     on:click={handleUploadImage}
     >
-    <span class="icon is-small"><i class="fas fa-camera-retro"></i></span>
+    <span class="icon is-small">{@html iconAddChange}</span>
     <span>{buttonText}</span>
     </button>
     {#if showDeleteImg}
@@ -162,7 +167,7 @@
     class:is-outlined={isOutlined}
     on:click={openingConfirmImgModal}
     >
-    <span class="icon is-small"><i class="fas fa-camera-retro"></i></span>
+    <span class="icon is-small"><i class="fas fa-trash-alt"></i></span>
     <span>{buttonTextDelete}</span>
     </button>
     <Confirmation

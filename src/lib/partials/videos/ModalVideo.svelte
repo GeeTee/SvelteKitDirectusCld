@@ -1,8 +1,10 @@
 <script>
-  import { createEventDispatcher } from "svelte";
-  import {fly, fade} from "svelte/transition"
-  import Button from "$lib/UI/Button.svelte";
-   import Select from '$lib/UI/Select.svelte'
+  import { createEventDispatcher } from "svelte"
+  import { fly, fade } from 'svelte/transition'
+  import f from '$lib/helpers/scripts'
+  import Button from "$lib/UI/Button.svelte"
+  import Select from '$lib/UI/Select.svelte'
+  import Notification from '$lib/UI/elements/NotificationMotion.svelte';
 
   const dispatch = createEventDispatcher();
 
@@ -14,6 +16,8 @@
 
   $: video_titleValid = (typeof video_title === 'string' && video_title !== '') ? true : false 
   $: video_urlValid = (typeof video_url === 'string' && video_url !== '') ? true : false
+  $: video_urlValidCode = (f.isYouTube(video_url)) ? true : false
+  $: formValid = video_urlValid && video_urlValidCode
 
   // BUTTON 
   // const enabled = 
@@ -56,7 +60,7 @@
   <div class="p-3">
     <div class="notification is-info is-light">
           <div class="field">
-          <label for="video-title" class="label">titre de la vidéo (optionnel)</label>
+          <label for="video-title" class="label">titre de la vidéo <span class="has-text-success">(optionnel)</span></label>
           <div class="control">
               <input 
               id="video-title" 
@@ -70,7 +74,7 @@
           </div>
         </div> 
         <div class="field">
-            <label for="video-url" class="label">Url de la vidéo</label>
+            <label for="video-url" class="label">Url de la vidéo <span class="has-text-danger">(indispensable)</span></label>
             <div class="control">
                 <input 
                 id="video-url" 
@@ -82,7 +86,21 @@
                 bind:value={video_url}
                 >
             </div>
-        </div>   
+        </div>
+            {#if !video_urlValidCode}
+              <Notification
+              is-danger
+              is-light
+              text="L'Url de la vidéo n'est pas valide"
+              />
+            {/if}
+            {#if !video_urlValid}
+              <Notification
+              is-danger
+              is-light
+              text='Obligatoire : url vidéo'
+              />
+            {/if}   
         <div class="field">
             <label for="video-url" class="label">Position de la vidéo</label>
             <div class="control">
@@ -95,13 +113,17 @@
         </div>
     </div>
     {#if !video_position}
-       <span class="has-text-info mb-3">Si vous ne choisissez pas de position de la vidéo par rapport au text => elle sera installée automatiquement sous le texte</span>
+      <Notification
+      is-info
+      is-light
+      text='Si vous ne choisissez pas de position de la vidéo par rapport au text => elle sera installée automatiquement sous le texte'
+      />
     {/if}
     <div class="buttons">
       <Button
       is-info
       is-outlined
-      enabled={video_urlValid}
+      enabled={formValid}
       fct={savingVideo}
       >
           <span class="icon is-small"><i class="fas fa-film"></i></span>
