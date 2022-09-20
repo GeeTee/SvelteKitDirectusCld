@@ -13,6 +13,7 @@
   export let video_title = ''
   export let video_url = ''
   export let video_position = ''
+	export let needVideoPosition = true
 
   $: video_titleValid = (typeof video_title === 'string' && video_title !== '') ? true : false 
   $: video_urlValid = (typeof video_url === 'string' && video_url !== '') ? true : false
@@ -101,18 +102,20 @@
               text='Obligatoire : url vidéo'
               />
             {/if}   
-        <div class="field">
-            <label for="video-url" class="label">Position de la vidéo</label>
-            <div class="control">
-                <Select 
-                {selectItems} 
-                selected={video_position}
-                on:get-selected={getVideoPosition}
-                />
-            </div>
-        </div>
+        {#if needVideoPosition}
+          <div class="field">
+              <label for="video-url" class="label">Position de la vidéo</label>
+              <div class="control">
+                  <Select 
+                  {selectItems} 
+                  selected={video_position}
+                  on:get-selected={getVideoPosition}
+                  />
+              </div>
+          </div>
+        {/if}
     </div>
-    {#if !video_position}
+    {#if needVideoPosition && !video_position}
       <Notification
       is-info
       is-light
@@ -182,10 +185,6 @@
 
   .buttons {
     border-top: 1px solid transparent;
-  }
-
-  .has-text-info.mb-3 {
-    border-bottom: 1px solid transparent;
   }
 
   @media (min-width: 768px) {

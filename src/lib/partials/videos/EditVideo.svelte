@@ -8,6 +8,7 @@
     export let video_title = null
     export let video_url = null
     export let video_position = null
+    export let needVideoPosition = true
 
     const dispatch = createEventDispatcher();
 
@@ -53,15 +54,24 @@
         if (videoInfos.video_url !== video_url) {
             video_url = videoInfos.video_url
         }
-        if (videoInfos.video_position !== video_position) {
+        if (needVideoPosition && videoInfos.video_position !== video_position) {
             video_position = videoInfos.video_position
         }
-        console.log('getVideoInfos EditVidéo 3', {video_title}, {video_url}, {video_position})
-        dispatch('save-video', {
-            video_title,
-            video_url,
-            video_position
-        })
+        if (needVideoPosition) {
+            console.log('getVideoInfos EditVidéo 3', {video_title}, {video_url}, {video_position})
+            dispatch('save-video', {
+                video_title,
+                video_url,
+                video_position
+            })           
+        }
+        if (!needVideoPosition) {
+            console.log('getVideoInfos EditVidéo 3 sans video position', {video_title}, {video_url})
+            dispatch('save-video', {
+                video_title,
+                video_url,
+            })           
+        }
     }
 </script>
 <span class="label">Gérer la vidéo</span>
@@ -141,6 +151,7 @@ closeButtonTitle='Abandonner'
 {video_title}
 {video_url}
 {video_position}
+{needVideoPosition}
 on:save-video={getVideoInfos}
 on:cancelMod={closeModale}
 />

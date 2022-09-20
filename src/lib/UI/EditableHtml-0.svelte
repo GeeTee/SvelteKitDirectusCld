@@ -9,7 +9,7 @@
 <div class="box">
 <p class="label">{label}</p>
 <hr>
-<div class="container">
+<div class="container notification is-info is-light">
     <slot>Fall back</slot>
     <Actions
     is-size-4
@@ -22,8 +22,10 @@
 </div>
 <style lang="scss">
     .container {
-        align-items: center;
+        $dim: 0.5rem;
+        align-items: flex-start;
         display: flex;
         justify-content: space-between;
+        padding: $dim;
     }
 </style>

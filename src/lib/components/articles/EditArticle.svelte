@@ -18,7 +18,9 @@
     import ButtonsCancelConfirm from '$lib/UI/ButtonsCancelConfirm.svelte'
     import Confirmation from '$lib/UI/ConfirmationActionLite.svelte'
     import Notification from '$lib/UI/elements/NotificationDetails.svelte'
-    import IconsLinks from '$lib/UI/actionsIcones/IconsLinks.svelte';
+    import IconsLinks from '$lib/UI/actionsIcones/IconsLinks.svelte'
+    import GalleryVideos from '$lib/partials/videos/GalleryVideos.svelte'
+    import GalleryVideosUpload from '$lib/partials/videos/GalleryVideosUpload.svelte'
 
     export let itemToEdit = undefined
     export let canDeleteArticle = true
@@ -28,7 +30,7 @@
     const articles = directus.items('advanced_articles')
 
     let parts = writable([])
-
+    // ITEM TO EDIT OR NEW
     let id = ''
     let title = ''
     let main_text = ''
@@ -36,6 +38,8 @@
     let cld_public_id = ''
     let blocks = []
     let gallery_photos = []
+    let gallery_videos = []
+    // UTILITIES
     let thumbGallery= []
     let itemBup = {}
     let imgsKept = []
@@ -83,24 +87,33 @@
 
     // VARS CONFIRMATIONS
     let openGalleryModal = false
+    let openGalleryVideosModal = false
     let openBannerModal = false
     let openDangerModal = false
     const openingGalleryModal = () => {
-    console.log('openingGalleryModal')
+    // console.log('openingGalleryModal')
     openGalleryModal = true
     }
     const openingBannerModal = () => {
-        console.log('openingBannerModal')
+        // console.log('openingBannerModal')
         openBannerModal = true
     }
     const openingDangerModal = () => {
-        console.log('openingDangerModal')
+        // console.log('openingDangerModal')
         openDangerModal = true
+    }
+    const openingGalleryVideosModal = () => {
+    console.log('openingGalleryVideosModal')
+    openGalleryVideosModal = true
     }
 
     // CREATING NEW GALLERY OR UPDATING
-    $: creatingGalleryBtn = thumbGallery.length <= 0 ? true : false
+    $: creatingGalleryBtn = (thumbGallery.length <= 0) ? true : false
     $: deletingGallBtn = (thumbGallery.length > 0) ? true : false
+
+    // CREATING NEW GALLERY VIDEOS OR UPDATING
+    $: creatingGalleryVideosBtn = (gallery_videos?.length <= 0) ? true : false
+    $: deletingGallVideosBtn = (gallery_videos?.length > 0) ? true : false
 
     // CONFIRMATION ACTION ENREGISTER //TODO:
     let haveSaved = false
@@ -120,6 +133,7 @@
     $: editMainText = itemToEdit ? false : true
     let editBanner = false
     let editGallery = false
+    let editGalleryVideos = false
     let galleryAction = ''
     let blockIsUpdated = false
 
@@ -138,8 +152,9 @@
             parts.set(itemToEdit.blocks)        
         }
         cld_public_id = itemToEdit.cld_public_id // BAnner
-        if (itemToEdit.gallery_photos && itemToEdit.gallery_photos !== null) {
-            console.log('on a une gallery')
+        // if (itemToEdit.gallery_photos && itemToEdit.gallery_photos !== null) {
+        if (itemToEdit.gallery_photos && Array.isArray(itemToEdit.gallery_photos) && itemToEdit.gallery_photos.length > 0) {
+            console.log('on a une gallery images')
             gallery_photos = itemToEdit.gallery_photos
             thumbGallery = gallery_photos.map(img => {
                 return {
@@ -148,7 +163,11 @@
                 }
             })
         }
-        
+        // Gallery vidéos 
+        if (itemToEdit.gallery_videos && Array.isArray(itemToEdit.gallery_videos) && itemToEdit.gallery_videos.length > 0) {
+            console.log('on a une gallery videos')
+            gallery_videos = itemToEdit.gallery_videos
+        }
     }
 
     // $: console.log('EditArticle', {blocks})
@@ -340,7 +359,6 @@
     }
 
     // GALLERY IMGS
-    let thumbGallCompo = ThumbsGallery
     let thumbGallProps = {
         thumbGallery,
     }
@@ -398,7 +416,7 @@
         saveItem()
     }
     const editingGallery = () => {
-        console.log('editingGallery')
+        // console.log('editingGallery')
         editGallery = true
     }
     const saveNewGallery = async () => {
@@ -429,6 +447,19 @@
         // ADDING => QUAND ON QUITTE LA PAGE, ELLE(S) EST / SONT ENLEVÉES
 
         editGallery = false
+    }
+
+    // GALLERY VIDEOS
+    const editingGalleryVideos = () => {
+        console.log('editingGalleryVideos')
+        editGalleryVideos = true
+    }
+    const saveNewGalleryVideos = async () => {
+        await saveItem()
+        editGalleryVideos = false
+    }
+    const cancelModifGalleryVideos = () => {
+        editGalleryVideos = false
     }
 
     // BLOCKS
@@ -499,7 +530,7 @@
             }        
         }
 
-        // MANAGING VIDEO
+        // MANAGING VIDEO IN BLOCK
         if (blocks[idx].video_url) { // ON A UN VIDEO ANCIENNE
             if (blockWithChanges.video_url) { // ON A UN NOUVEAU VIDEO 
                 if (blocks[idx].video_url !== blockWithChanges.video_url) { // VIDEOS DIFFÉRENTS
@@ -547,6 +578,8 @@
                 }
             }        
         }
+
+        // MANAGING GALLERY VIDEOS
 
         // blocks[idx] = blockUpdated
         console.log('updateBlock EditArticle 2', {blocks}, idx, id)
@@ -923,6 +956,38 @@
             () => openGalleryModal = false
         } />
 
+    {/if}
+
+    {#if editGalleryVideos}
+        <GalleryVideosUpload {gallery_videos} />
+        <div class="buttons">
+            <Button
+            is-primary
+            enabled={true}
+            fct={saveNewGalleryVideos}
+            >
+                Enregistrer la modif
+            </Button>
+            <Button
+            is-info
+            enabled={true}
+            fct={cancelModifGalleryVideos}
+            >
+                Abandonner la modif
+            </Button>
+        </div>
+    {/if}
+
+    {#if !editGalleryVideos && itemToEdit}
+        <HtmlO
+        label='Galerie Vidéos'
+        fct={editingGalleryVideos}
+        fctDel={openingGalleryVideosModal}
+        creating={creatingGalleryVideosBtn}
+        deleting={deletingGallVideosBtn}
+        >
+            <GalleryVideos {gallery_videos} />
+        </HtmlO>
     {/if}
 </div>
 

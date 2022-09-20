@@ -39,6 +39,7 @@ class={classL}
 
 <style lang="scss">
     .actions {
+        align-self: stretch;
         display: flex;
         flex-direction: column;
         justify-content: center;
