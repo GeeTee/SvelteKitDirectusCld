@@ -5,9 +5,7 @@
 
     export let gallery_videos = [] 
 
-    const saveVideo = (e) => {
-        console.log('saveVideo', e.detail)
-    }
+
 </script>
 {#if gallery_videos.length > 0}
     <p class="label">Gérer la gallerie images</p>
@@ -16,14 +14,15 @@
 {/if}
 {#if gallery_videos.length > 0}
     <ol>
-        {#each gallery_videos as {video_url, video_title}}
+        {#each gallery_videos as {video_url, video_title, id}}
             <li>
                 <div>
                     <EditVideo 
                     {video_title} 
                     {video_url} 
+                    {id}
                     needVideoPosition={false} 
-                    on:save-video={saveVideo}
+                    on:save-video
                     />
                 </div>
             </li>

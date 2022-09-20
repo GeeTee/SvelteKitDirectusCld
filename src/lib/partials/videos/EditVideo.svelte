@@ -8,6 +8,7 @@
     export let video_title = null
     export let video_url = null
     export let video_position = null
+    export let id = null
     export let needVideoPosition = true
 
     const dispatch = createEventDispatcher();
@@ -70,6 +71,7 @@
             dispatch('save-video', {
                 video_title,
                 video_url,
+                id
             })           
         }
     }

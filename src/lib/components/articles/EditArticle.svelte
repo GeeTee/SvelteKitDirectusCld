@@ -461,6 +461,16 @@
     const cancelModifGalleryVideos = () => {
         editGalleryVideos = false
     }
+    const saveVideo = (e) => {
+        const videoUpdated = {
+            id: e.detail.id,
+            video_url: e.detail.video_url,
+            video_title: e.detail.video_title,
+        }
+        console.log('saveVideo EditArticle 1', {videoUpdated})
+        const videoToUpdate = gallery_videos.filter(item => item.id === videoUpdated.id)[0]
+        console.log('saveVideo EditArticle 2', {videoToUpdate})
+    }
 
     // BLOCKS
     const updateBlock = (e) => {
@@ -959,7 +969,10 @@
     {/if}
 
     {#if editGalleryVideos}
-        <GalleryVideosUpload {gallery_videos} />
+        <GalleryVideosUpload 
+        {gallery_videos} 
+        on:save-video={saveVideo}
+        />
         <div class="buttons">
             <Button
             is-primary
