@@ -10,6 +10,7 @@
     export let video_position = null
     export let id = null
     export let needVideoPosition = true
+    export let onlyAddVideo = false
 
     const dispatch = createEventDispatcher();
 
@@ -75,8 +76,19 @@
             })           
         }
     }
+    const deletingVideo = () => {
+        console.log('delete-video')
+        dispatch('delete-video', {id})
+        openVideoConfirm = false
+    }
 </script>
-<span class="label">Gérer la vidéo</span>
+{#if onlyAddVideo}
+    <span class="label">Ajouter une vidéo à la galerie</span>
+{/if}
+{#if !onlyAddVideo}
+    <span class="label">Gérer la vidéo</span>
+{/if}
+
 {#if video_url}
     {#if videoInfos.video_title}
         <span class="label">{videoInfos.video_title}</span>
@@ -98,11 +110,7 @@
     openModal={openVideoConfirm}
     title={`Détruire la vidéo`}
     phrase='détruire'
-    on:confirmation={() => {
-        console.log('delete-video')
-        dispatch('delete-video')
-        openVideoConfirm = false
-    }}
+    on:confirmation={deletingVideo}
     on:leaving={
         () => openVideoConfirm = false
     } 
@@ -110,7 +118,7 @@
 
 {/if}
 
-{#if !video_url}
+{#if !video_url && !onlyAddVideo}
     <span class="has-text-info">Actuellement pas / plus de vidéo installée</span>
 {/if}
 <div class="buttons my-3">

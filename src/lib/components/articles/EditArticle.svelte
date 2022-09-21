@@ -29,7 +29,9 @@
     const directus = getContext('directus')
     const articles = directus.items('advanced_articles')
 
+    // STORES
     let parts = writable([])
+
     // ITEM TO EDIT OR NEW
     let id = ''
     let title = ''
@@ -212,7 +214,7 @@
                 // console.log('saveItem blocks', {blocks})
             }
 
-            // SAVING GALLERY
+            // SAVING GALLERY PHOTOS
             updatedItem.gallery_photos = gallery_photos
             if (updatedItem.gallery_photos.length > 0) {
                 console.log('updatedItem.gallery_photos : ', updatedItem.gallery_photos)
@@ -224,6 +226,16 @@
             }
             if (updatedItem.gallery_photos.length === 0 && imgsKept.length > 0) {
                 imgsToDelete = [...imgsKept]
+            }
+
+            // SAVING GALLERY VIDEOS
+            
+            if (gallery_videos.length <= 0) {
+               updatedItem.gallery_videos = null 
+            }
+            if (gallery_videos.length > 0) {
+               updatedItem.gallery_videos = gallery_videos
+               console.log('itemToEdit gallery videos', {updatedItem})
             }
 
             console.log('itemToEdit saveItem 2', {updatedItem})
@@ -461,15 +473,39 @@
     const cancelModifGalleryVideos = () => {
         editGalleryVideos = false
     }
-    const saveVideo = (e) => {
+    const saveVideoInGallery = (e) => {
         const videoUpdated = {
             id: e.detail.id,
             video_url: e.detail.video_url,
             video_title: e.detail.video_title,
         }
-        console.log('saveVideo EditArticle 1', {videoUpdated})
+        console.log('saveVideoInGallery EditArticle 1', {videoUpdated})
         const videoToUpdate = gallery_videos.filter(item => item.id === videoUpdated.id)[0]
-        console.log('saveVideo EditArticle 2', {videoToUpdate})
+        console.log('saveVideoInGallery EditArticle 2', {videoToUpdate})
+        if (videoUpdated.video_title === '') {
+            console.log(('videoUpdated.video_title vide'))
+            delete videoToUpdate.video_title 
+            if (videoUpdated.video_url !== videoToUpdate.video_url) {
+                videoToUpdate.video_url = videoUpdated.video_url
+            }
+        }
+        if (videoUpdated.video_title !== '') {
+            console.log(('videoUpdated.video_title plein')) 
+            if (videoUpdated.video_title !== videoToUpdate.video_title) {
+                videoToUpdate.video_title = videoUpdated.video_title
+            } 
+            if (videoUpdated.video_url !== videoToUpdate.video_url) {
+                videoToUpdate.video_url = videoUpdated.video_url
+            }
+        }
+        console.log('saveVideoInGallery EditArticle 3', {gallery_videos})
+    }
+
+    const deleteVideoInGallery = (e) => {
+        console.log('deleteVideoInGallery 0', e.detail)
+        const {idToDelete} = e.detail
+        gallery_videos = gallery_videos.filter(video => video.id !== idToDelete)
+        console.log('deleteVideoInGallery 1', {gallery_videos})
     }
 
     // BLOCKS
@@ -687,6 +723,7 @@
         }
     )
 </script>
+
 <svelte:head>
 <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript">  
 </script>
@@ -971,7 +1008,8 @@
     {#if editGalleryVideos}
         <GalleryVideosUpload 
         {gallery_videos} 
-        on:save-video={saveVideo}
+        on:save-video={saveVideoInGallery}
+        on:delete-one-video-in-gallery={deleteVideoInGallery}
         />
         <div class="buttons">
             <Button

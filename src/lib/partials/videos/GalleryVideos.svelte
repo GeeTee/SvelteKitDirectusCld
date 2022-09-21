@@ -8,8 +8,7 @@
     <ul>
         {#each gallery_videos as {video_url, video_title}}
             <li>
-                <Youtube {video_url} />
-                {video_title}
+                <Youtube {video_url} {video_title} />
             </li>
         {/each}
     </ul>
@@ -27,6 +26,7 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
+        width: 100%;
     }
     li {
         width: calc(50% - 0.35rem);
