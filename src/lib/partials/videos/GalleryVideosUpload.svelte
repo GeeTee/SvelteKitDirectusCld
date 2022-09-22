@@ -10,11 +10,11 @@
     let gallery_videosU = []
 
     // STORES
-    let videos = writable([])
-    if (gallery_videos.length > 0) {
-        videos.set(gallery_videos)
-        console.log('videos store', $videos)
-    }
+    // let videos = writable([])
+    // if (gallery_videos.length > 0) {
+    //     videos.set(gallery_videos)
+    //     console.log('videos store', $videos)
+    // }
 
     const updatevideosStore = (e) => {
         const idToDelete = e.detail.id

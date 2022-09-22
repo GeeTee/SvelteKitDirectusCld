@@ -31,6 +31,7 @@
 
     // STORES
     let parts = writable([])
+    let videos = writable([])
 
     // ITEM TO EDIT OR NEW
     let id = ''
@@ -169,6 +170,7 @@
         if (itemToEdit.gallery_videos && Array.isArray(itemToEdit.gallery_videos) && itemToEdit.gallery_videos.length > 0) {
             console.log('on a une gallery videos')
             gallery_videos = itemToEdit.gallery_videos
+            videos.set(itemToEdit.gallery_videos)
         }
     }
 
@@ -501,11 +503,24 @@
         console.log('saveVideoInGallery EditArticle 3', {gallery_videos})
     }
 
+    let gallery_videosU = []
     const deleteVideoInGallery = (e) => {
+        const idToDelete = e.detail.id
         console.log('deleteVideoInGallery 0', e.detail)
-        const {idToDelete} = e.detail
+        updatevideosStoreDeleting(idToDelete, gallery_videosU, gallery_videos )
         gallery_videos = gallery_videos.filter(video => video.id !== idToDelete)
         console.log('deleteVideoInGallery 1', {gallery_videos})
+    }
+
+    const updatevideosStoreDeleting = (id, gallery_videosU, gallery_videos) => {
+        
+        console.log('deleteVideoInGallery GalleryU 1', {id}, {gallery_videos})
+        gallery_videosU = $videos.filter(item => item.id !== idToDelete)
+        videos.set([])
+        console.log('deleteVideoInGallery GalleryU 2', $videos)
+        videos.set(gallery_videosU)
+        console.log('deleteVideoInGallery GalleryU 3', $videos)
+        // dispatch('delete-one-video-in-gallery',{idToDelete})
     }
 
     // BLOCKS
@@ -1007,9 +1022,9 @@
 
     {#if editGalleryVideos}
         <GalleryVideosUpload 
-        {gallery_videos} 
+        gallery_videos={$videos} 
         on:save-video={saveVideoInGallery}
-        on:delete-one-video-in-gallery={deleteVideoInGallery}
+        on:delete-video={deleteVideoInGallery}
         />
         <div class="buttons">
             <Button
