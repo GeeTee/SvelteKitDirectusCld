@@ -7,7 +7,7 @@
     export let creating = false
 </script>
 <div class="box">
-<p class="label">{label}</p>
+<p class="label">{@html label}</p>
 <hr>
 <div class="container notification is-info is-light">
     <slot>Fall back</slot>

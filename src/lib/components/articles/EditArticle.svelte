@@ -1063,13 +1063,14 @@
 
     {#if !editGalleryVideos && itemToEdit}
         <HtmlO
-        label='Galerie Vidéos'
+        label={`Galerie Vidéos (${$videos.length})`}
         fct={editingGalleryVideos}
         fctDel={openingGalleryVideosModal}
         creating={creatingGalleryVideosBtn}
         deleting={deletingGallVideosBtn}
         >
-            <GalleryVideos {gallery_videos} />
+            <GalleryVideos gallery_videos={$videos} />
+            <!-- <GalleryVideos {gallery_videos} /> -->
         </HtmlO>
     {/if}
 </div>

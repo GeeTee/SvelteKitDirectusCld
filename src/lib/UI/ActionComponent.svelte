@@ -43,6 +43,11 @@ class={classL}
         display: flex;
         flex-direction: column;
         justify-content: center;
+        span {
+            &:first-child {
+                margin-bottom: 0.5rem;
+            }
+        }
     }
     i:hover {
         cursor: pointer;

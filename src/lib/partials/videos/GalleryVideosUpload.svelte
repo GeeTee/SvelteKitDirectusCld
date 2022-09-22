@@ -10,13 +10,10 @@
     )
 </script>
 {#if gallery_videos.length > 0}
-    <p class="label">Gérer la gallerie images ({gallery_videos.length})</p>
+    <p class="label">Gérer la galerie Vidéos ({gallery_videos.length})</p>
 {:else}
-    <p class="label">Alimenter la gallerie images</p>
+    <p class="label">Alimenter la galerie vidéos</p>
 {/if}
-<ul>
-    <li>gallery_videos.length : {gallery_videos.length}</li>
-</ul>
 {#if gallery_videos.length > 0 }
     <ol class="AA">
         {#each gallery_videos as {video_url, video_title, id} (id)}
@@ -38,7 +35,7 @@
 
 <div>
     <EditVideo 
-    onlyAddVideo={true}
+    onlyAddVideoToGallery={true}
     needVideoPosition={false} 
     on:save-video
     />
