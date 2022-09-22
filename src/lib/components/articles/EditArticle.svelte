@@ -515,7 +515,7 @@
     const updatevideosStoreDeleting = (id, gallery_videosU, gallery_videos) => {
         
         console.log('deleteVideoInGallery GalleryU 1', {id}, {gallery_videos})
-        gallery_videosU = $videos.filter(item => item.id !== idToDelete)
+        gallery_videosU = $videos.filter(item => item.id !== id)
         videos.set([])
         console.log('deleteVideoInGallery GalleryU 2', $videos)
         videos.set(gallery_videosU)
