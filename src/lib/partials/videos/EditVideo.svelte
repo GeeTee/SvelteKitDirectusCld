@@ -10,11 +10,12 @@
     export let video_position = null
     export let id = null
     export let needVideoPosition = true
-    export let onlyAddVideo = false
+    export let onlyAddVideoToGallery = false
 
     const dispatch = createEventDispatcher();
 
-    let openModal = false
+    let openModalToUpdate = false
+    let openModalToCreate = false
     let videoInfos = {} // UPDATING DELETING VIDEO
     $: modalTitle = video_url ? 'Modifier le titre ou le lien de vidéo' : 'Ajouter une vidéo'
 
@@ -27,6 +28,7 @@
 
     onDestroy(
         () => {
+            id = null
             video_title = null
             video_url = null
             video_position = ''
@@ -35,14 +37,17 @@
 
     // FUNCTIONS
 
-    const closeModale = () => {
-        openModal = false
+    const closeModaleToUpdate = () => {
+        openModalToUpdate = false
         // dispatch('leaving')
     }
 
-    const editVideo = () => {
-        openModal = true
+    const editVideoToUpdate = () => {
+        openModalToUpdate = true
     }
+
+    const closeModaleToCreate = () => openModalToCreate = false
+    const createVideo = () => openModalToCreate = true
 
   
     
@@ -50,6 +55,9 @@
         console.log('getVideoInfos EditVidéo 1', e.detail)
         videoInfos = await e.detail 
         console.log('getVideoInfos EditVidéo 2', {videoInfos})
+        if (videoInfos.id !== id) {
+            id = videoInfos.id
+        }
         if (videoInfos.video_title !== video_title) {
             video_title = videoInfos.video_title
         }
@@ -60,19 +68,20 @@
             video_position = videoInfos.video_position
         }
         if (needVideoPosition) {
-            console.log('getVideoInfos EditVidéo 3', {video_title}, {video_url}, {video_position})
+            console.log('getVideoInfos EditVidéo 3', {id}, {video_title}, {video_url}, {video_position})
             dispatch('save-video', {
+                id,
                 video_title,
                 video_url,
                 video_position
             })           
         }
         if (!needVideoPosition) {
-            console.log('getVideoInfos EditVidéo 3 sans video position', {video_title}, {video_url})
+            console.log('getVideoInfos EditVidéo 3 sans video position', {id}, {video_title}, {video_url})
             dispatch('save-video', {
+                id,
                 video_title,
-                video_url,
-                id
+                video_url
             })           
         }
     }
@@ -82,10 +91,10 @@
         openVideoConfirm = false
     }
 </script>
-{#if onlyAddVideo}
+{#if onlyAddVideoToGallery}
     <span class="label">Ajouter une vidéo à la galerie</span>
 {/if}
-{#if !onlyAddVideo}
+{#if !onlyAddVideoToGallery}
     <span class="label">Gérer la vidéo</span>
 {/if}
 
@@ -118,7 +127,7 @@
 
 {/if}
 
-{#if !video_url && !onlyAddVideo}
+{#if !video_url && !onlyAddVideoToGallery}
     <span class="has-text-info">Actuellement pas / plus de vidéo installée</span>
 {/if}
 <div class="buttons my-3">
@@ -127,7 +136,7 @@
         is-info
         is-outlined
         enabled={true}
-        fct={editVideo}
+        fct={editVideoToUpdate}
         >
             <span class="icon is-small"><i class="fas fa-wrench"></i></span>
             <span>Modifier</span>
@@ -147,22 +156,33 @@
         is-primary
         is-outlined
         enabled={true}
-        fct={editVideo}
+        fct={createVideo}
         >
             <span class="icon is-small"><i class="fas fa-film"></i></span>
             <span>Ajouter une vidéo</span>
         </Button>
     {/if}
 </div>
-{#if openModal}
+{#if openModalToUpdate}
 <Modal
 title={modalTitle}
 closeButtonTitle='Abandonner'
+{id}
 {video_title}
 {video_url}
 {video_position}
 {needVideoPosition}
 on:save-video={getVideoInfos}
-on:cancelMod={closeModale}
+on:cancelMod={closeModaleToUpdate}
+/>
+{/if}
+
+{#if openModalToCreate}
+<Modal
+title={modalTitle}
+closeButtonTitle='Abandonner'
+{needVideoPosition}
+on:save-video={getVideoInfos}
+on:cancelMod={closeModaleToCreate}
 />
 {/if}

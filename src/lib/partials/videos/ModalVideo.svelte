@@ -10,6 +10,7 @@
 
   export let title;
   export let closeButtonTitle = 'Fermer'
+  export let id = 0
   export let video_title = ''
   export let video_url = ''
   export let video_position = ''
@@ -42,8 +43,14 @@
   }
 
   const savingVideo = () => {
-    console.log('savingVideo ModalVidéo',video_title, video_url, video_position)
-    dispatch('save-video', {video_title, video_url, video_position})
+    console.log('savingVideo ModalVidéo',id, video_title, video_url, video_position)
+    if (id === 0) {id = Date.now()}
+    if (needVideoPosition) {
+      dispatch('save-video', {id, video_title, video_url, video_position})
+    }
+    if (!needVideoPosition) {
+      dispatch('save-video', {id, video_title, video_url})
+    }    
     closeModal()
   }
 

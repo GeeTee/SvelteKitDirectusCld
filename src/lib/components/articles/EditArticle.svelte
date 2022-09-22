@@ -476,30 +476,47 @@
         editGalleryVideos = false
     }
     const saveVideoInGallery = (e) => {
-        const videoUpdated = {
+        const videoUpdatedOrCreated = {
             id: e.detail.id,
             video_url: e.detail.video_url,
             video_title: e.detail.video_title,
         }
-        console.log('saveVideoInGallery EditArticle 1', {videoUpdated})
-        const videoToUpdate = gallery_videos.filter(item => item.id === videoUpdated.id)[0]
-        console.log('saveVideoInGallery EditArticle 2', {videoToUpdate})
-        if (videoUpdated.video_title === '') {
-            console.log(('videoUpdated.video_title vide'))
-            delete videoToUpdate.video_title 
-            if (videoUpdated.video_url !== videoToUpdate.video_url) {
-                videoToUpdate.video_url = videoUpdated.video_url
+        if (e.detail.video_position) {
+            videoUpdatedOrCreated.video_position = e.detail.video_position
+        }
+        console.log('saveVideoInGallery EditArticle 10', {videoUpdatedOrCreated})
+
+        // UPDATING VIDEO
+        const idx = gallery_videos.findIndex(item => item.id == videoUpdatedOrCreated.id)
+        console.log('saveVideoInGallery EditArticle 11', {idx})
+        if (idx >= 0) {
+            const videoToUpdate = gallery_videos[idx] 
+            console.log('saveVideoInGallery EditArticle 2', {videoToUpdate})
+            if (videoUpdatedOrCreated.video_title === '') {
+                console.log(('videoUpdatedOrCreated.video_title vide'))
+                delete videoToUpdate.video_title 
+                if (videoUpdatedOrCreated.video_url !== videoToUpdate.video_url) {
+                    videoToUpdate.video_url = videoUpdatedOrCreated.video_url
+                }
+            }
+            if (videoUpdatedOrCreated.video_title !== '') {
+                console.log(('videoUpdatedOrCreated.video_title plein')) 
+                if (videoUpdatedOrCreated.video_title !== videoToUpdate.video_title) {
+                    videoToUpdate.video_title = videoUpdatedOrCreated.video_title
+                } 
+                if (videoUpdatedOrCreated.video_url !== videoToUpdate.video_url) {
+                    videoToUpdate.video_url = videoUpdatedOrCreated.video_url
+                }
             }
         }
-        if (videoUpdated.video_title !== '') {
-            console.log(('videoUpdated.video_title plein')) 
-            if (videoUpdated.video_title !== videoToUpdate.video_title) {
-                videoToUpdate.video_title = videoUpdated.video_title
-            } 
-            if (videoUpdated.video_url !== videoToUpdate.video_url) {
-                videoToUpdate.video_url = videoUpdated.video_url
-            }
+        // ADDING NEW VIDEO
+        if (idx < 0) {
+            gallery_videos.push(videoUpdatedOrCreated)
         }
+        // const videoToUpdate = gallery_videos.filter(item => item.id === videoUpdated.id)[0]
+
+        videos.set([])
+        videos.set(gallery_videos)
         console.log('saveVideoInGallery EditArticle 3', {gallery_videos})
     }
 

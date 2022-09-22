@@ -1,28 +1,11 @@
 <script>
-    // import { writable } from 'svelte/store'
     import {onDestroy} from 'svelte'
     import EditVideo from '$lib/partials/videos/EditVideo.svelte'
-
-    // const dispatch = createEventDispatcher();
-
     export let gallery_videos = []
-    
-    // let gallery_videosU = []
-
-    // STORES
-    // let videos = writable([])
-    // if (gallery_videos.length > 0) {
-    //     videos.set(gallery_videos)
-    //     console.log('videos store', $videos)
-    // }
-
-
 
     onDestroy(
         () => {
-            // videos.set([])
             gallery_videos = []
-            // gallery_videosU = []
         }
     )
 </script>
