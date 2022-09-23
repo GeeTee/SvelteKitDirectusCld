@@ -45,44 +45,46 @@
         openModal = true
     }
     
-    // const getVideoInfos = async (e) => {
-    //     console.log('getVideoInfos EditVidéo 1', e.detail)
-    //     videoInfos = await e.detail 
-    //     console.log('getVideoInfos EditVidéo 2', {videoInfos}, {onlyAddVideoToGallery})
-    //     if (videoInfos.id !== id) {
-    //         id = videoInfos.id
-    //     }
-    //     if (videoInfos.video_title !== video_title) {
-    //         video_title = videoInfos.video_title
-    //     }
-    //     if (videoInfos.video_url !== video_url) {
-    //         video_url = videoInfos.video_url
-    //     }
-    //     if (needVideoPosition && videoInfos.video_position !== video_position) {
-    //         video_position = videoInfos.video_position
-    //     }
-    //     if (onlyAddVideoToGallery) {
-    //         console.log('getVideoInfos EditVidéo 3 avec position', {id}, {video_title}, {video_url}, {video_position})
-    //         dispatch('save-video', {
-    //             id,
-    //             video_title,
-    //             video_url,
-    //             video_position
-    //         })           
-    //     }
-    //     if (!onlyAddVideoToGallery) {
-    //         console.log('getVideoInfos EditVidéo 3 sans position', {id}, {video_title}, {video_url})
-    //         dispatch('save-video', {
-    //             id,
-    //             video_title,
-    //             video_url
-    //         })           
-    //     }
-    //     id = null
-    //     video_title = null
-    //     video_url = null
-    //     video_position = '' 
-    // }
+    const getVideoInfos = async (e) => {
+        console.log('getVideoInfos EditVidéo 1', e.detail)
+        videoInfos = await e.detail 
+        console.log('getVideoInfos EditVidéo 2', {videoInfos}, {onlyAddVideoToGallery})
+        if (videoInfos.id !== id) {
+            id = videoInfos.id
+        }
+        if (videoInfos.video_title !== video_title) {
+            video_title = videoInfos.video_title
+        }
+        if (videoInfos.video_url !== video_url) {
+            video_url = videoInfos.video_url
+        }
+
+        if (needVideoPosition && videoInfos.video_position !== video_position) {
+            video_position = videoInfos.video_position
+        }
+        if (onlyAddVideoToGallery) {
+            console.log('getVideoInfos EditVidéo 3 avec position', {id}, {video_title}, {video_url}, {video_position})
+            dispatch('save-video', {
+                id,
+                video_title,
+                video_url,
+                video_position
+            })           
+        }
+        if (!onlyAddVideoToGallery) {
+            console.log('getVideoInfos EditVidéo 3 sans position', {id}, {video_title}, {video_url})
+            dispatch('save-video', {
+                id,
+                video_title,
+                video_url
+            })           
+        }
+        // id = null
+        // video_title = null
+        // video_url = null
+        // video_position = '' 
+    }
+
     const deletingVideo = () => {
         console.log('delete-video')
         dispatch('delete-video', {id})
@@ -171,6 +173,7 @@ closeButtonTitle='Abandonner'
 {video_position}
 {needVideoPosition}
 on:save-video
+on:update-video={getVideoInfos}
 on:cancelMod={closeModale}
 />
 {/if}
