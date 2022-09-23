@@ -115,8 +115,8 @@
     $: deletingGallBtn = (thumbGallery.length > 0) ? true : false
 
     // CREATING NEW GALLERY VIDEOS OR UPDATING
-    $: creatingGalleryVideosBtn = (gallery_videos?.length <= 0) ? true : false
-    $: deletingGallVideosBtn = (gallery_videos?.length > 0) ? true : false
+    $: creatingGalleryVideosBtn = ($videos?.length <= 0) ? true : false
+    $: deletingGallVideosBtn = ($videos?.length > 0) ? true : false
 
     // CONFIRMATION ACTION ENREGISTER //TODO:
     let haveSaved = false
@@ -141,9 +141,8 @@
     let blockIsUpdated = false
 
     if (itemToEdit) {
-        console.log('EDITARTICLE', {itemToEdit})
-        // isEdited = true
         itemBup = {...itemToEdit}
+        console.log('EDITARTICLE', {itemToEdit}, {itemBup})
         id = itemToEdit.id
         title = itemToEdit.title
         slug = itemToEdit.slug
@@ -249,7 +248,6 @@
             if (res) {
                 ar.updateArticle(res.id, res)
                 console.log('update itemToEdit if res', $ar)
-                // goto(`/news/${updatedItem.slug || itemBup.slug}?img=${cld_public_id}`)
             }            
         }
 
@@ -304,7 +302,7 @@
 
     // BANNER
     $: bannerValid = (cld_public_id !== itemBup.cld_public_id)? true : false
-    $: deleteBannerValid = (cld_public_id !== '')? true : false
+    // $: deleteBannerValid = (cld_public_id !== '')? true : false
     const getNewBannerId = (e) => {
         const {public_id} = e.detail
         // console.log('getNewBannerId', public_id)
@@ -414,7 +412,7 @@
         dnGallery = false
         galleryAction = 'removing'
     }
-    const emptyGallery = () => {
+    const emptyGalleryImgs = () => {
         // console.log('EditArticle emptyGallery 1', {imgsKept})
         const allImgToDelete = thumbGallery.map(img => {return img.slug})
         console.log('EditArticle emptyGallery 2', {allImgToDelete})
@@ -423,10 +421,10 @@
         gallery_photos = []
         dnGallery = false
     }
-    const externalEmptyGallery = async () => {
+    const externalEmptyGalleryImgs = async () => {
         console.log('externalEmptyGallery')
         thumbGallProps.thumbGallery = []
-        await emptyGallery()
+        await emptyGalleryImgs()
         saveItem()
     }
     const editingGallery = () => {
@@ -473,6 +471,12 @@
         editGalleryVideos = false
     }
     const cancelModifGalleryVideos = () => {
+        console.log('cancelModifGalleryVideos************')
+        gallery_videos = []
+        gallery_videos = itemBup.gallery_videos
+        videos.set([])
+        videos.set(itemBup.gallery_videos)
+        console.log('cancelModifGalleryVideos', {itemBup}, {gallery_videos}, $videos)
         editGalleryVideos = false
     }
     const saveVideoInGallery = (e) => {
@@ -484,10 +488,11 @@
         if (e.detail.video_position) {
             videoUpdatedOrCreated.video_position = e.detail.video_position
         }
-        console.log('saveVideoInGallery EditArticle 10', {videoUpdatedOrCreated})
+        console.log('saveVideoInGallery EditArticle 10', {videoUpdatedOrCreated}, {gallery_videos}, {itemBup}, $videos)
 
-        // UPDATING VIDEO
+        // UPDATING || CREATING
         const idx = gallery_videos.findIndex(item => item.id == videoUpdatedOrCreated.id)
+        // UPDATING VIDEO
         console.log('saveVideoInGallery EditArticle 11', {idx})
         if (idx >= 0) {
             const videoToUpdate = gallery_videos[idx] 
@@ -517,7 +522,7 @@
 
         videos.set([])
         videos.set(gallery_videos)
-        console.log('saveVideoInGallery EditArticle 3', {gallery_videos})
+        console.log('saveVideoInGallery EditArticle 3', {gallery_videos}, {itemBup})
     }
 
     let gallery_videosU = []
@@ -538,6 +543,16 @@
         videos.set(gallery_videosU)
         console.log('deleteVideoInGallery GalleryU 3', $videos)
         // dispatch('delete-one-video-in-gallery',{idToDelete})
+    }
+
+    const emptyGalleryVideos = () => {
+        gallery_videos = []
+        videos.set([])
+    }
+    const externalEmptyGalleryVideos = async () => {
+        console.log('externalEmptyGalleryVideos //TODO:')
+        await emptyGalleryVideos()
+        saveItem()
     }
 
     // BLOCKS
@@ -967,12 +982,12 @@
             on:deleting-this-block={deletingThisBlock}
             />
         {/each}
-            <Block 
-            newMoreBlockInfo='Compléter avec un autre block'
-            updateBlock={true} 
-            creatingBlock={true}
-            on:save-new-block={saveNewBlock}
-            />
+        <Block 
+        newMoreBlockInfo='Compléter avec un autre block'
+        updateBlock={true} 
+        creatingBlock={true}
+        on:save-new-block={saveNewBlock}
+        />
     {:else if $parts.length === 0 && itemToEdit }
         <span class="tag is-warning mb-1">Nombre de blocks : 0</span>
         <Block
@@ -992,7 +1007,7 @@
         dn={dnGallery}
         on:get-gallery-info={getGalleryInfo}
         on:deleting-Imgs={deletingImgs}
-        on:empty-gallery={emptyGallery}
+        on:empty-gallery={emptyGalleryImgs}
         />
         <div class="buttons">
             <Button
@@ -1028,7 +1043,7 @@
         phrase='détruire'
         on:confirmation={() => {
             console.log('Emptying Gallery')
-            externalEmptyGallery()
+            externalEmptyGalleryImgs()
             openGalleryModal = false
         }}
         on:leaving={
@@ -1072,6 +1087,20 @@
             <GalleryVideos gallery_videos={$videos} />
             <!-- <GalleryVideos {gallery_videos} /> -->
         </HtmlO>
+
+        <Confirmation
+        openModal={openGalleryVideosModal}
+        title={`Détruire la galerie vidéos`}
+        phrase='détruire'
+        dangerWord='IMMÉDIAT'
+        on:confirmation={() => {
+            console.log('Emptying Gallery Vidéos')
+            externalEmptyGalleryVideos()
+            openGalleryVideosModal = false
+        }}
+        on:leaving={
+            () => openGalleryVideosModal = false
+        } />
     {/if}
 </div>
 
