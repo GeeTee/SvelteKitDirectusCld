@@ -22,10 +22,9 @@
 		{/if}
 	</div>
 	{#if video_url && video_title}
-		<span>{video_title}</span>
+		<span class="label is-uppercase">{video_title}</span>
 	{/if}
 </div>
-
 <style lang="scss">
 .mediacontainer {
 	height: 0;

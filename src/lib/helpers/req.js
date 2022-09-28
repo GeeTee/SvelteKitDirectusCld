@@ -33,6 +33,67 @@ const getAllArticles = async () => {
     return items
 }
 
+const getArticleBySlug = async (slug) => {
+    if (typeof slug !== 'string') return
+    const res = await fetch(`${url}/graphql`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            query: `
+                query ($slug: String) {
+                    advanced_articles (filter: {slug: {_eq: $slug}}) {
+                        status
+                        id
+                        title
+                        slug 
+                        cld_public_id
+                        blocks
+                        gallery_photos
+                        gallery_videos
+                        main_text
+                        project
+                    }
+                }
+            `,
+            variables : {
+                slug
+            }
+        })
+    })
+
+    const {data: {advanced_articles}} = await res.json()
+    const item = advanced_articles[0]
+    console.log('req getArticleBySlug', {item})
+    return item
+}
+
+const getAllArticlesLinks = async () => {
+    const res = await fetch(`${url}/graphql`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            query: `
+                query {
+                    advanced_articles {
+                        id
+                        title
+                        slug 
+                    }
+                }
+            `
+        })
+    })
+
+    const {data: {advanced_articles}} = await res.json()
+    const items = advanced_articles
+    // console.log('req getAllArticlesLinks', {items})
+    return items
+}
+
 const getAllTest = async () => {
     const res = await fetch(`${url}/graphql`, {
         method: 'POST',
@@ -114,6 +175,8 @@ const getCurrentUser = async () => {
 }
 
 const reqServices = {
+    getArticleBySlug,
+    getAllArticlesLinks,
     getAllArticles,
     getAllTest,
     getTestSlug,

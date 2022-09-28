@@ -25,6 +25,7 @@
     export let itemToEdit = undefined
     export let canDeleteArticle = true
     export let newArticle = false 
+    export let gVBup = []
 
     const directus = getContext('directus')
     const articles = directus.items('advanced_articles')
@@ -43,8 +44,8 @@
     let gallery_photos = []
     let gallery_videos = []
     // UTILITIES
-    let thumbGallery= []
     let itemBup = {}
+    let thumbGallery= []
     let imgsKept = []
     let imgsToDelete = []
     // slugify 
@@ -466,75 +467,25 @@
         console.log('editingGalleryVideos')
         editGalleryVideos = true
     }
-    const updateVideo = (e) => {
-        const {id, video_title, video_url} = e.detail
-        console.log('updateVideo 0 //TODO:', {id}, {gallery_videos})
-        const idx = gallery_videos.findIndex(item => item.id === id)
-        const updatedItem = gallery_videos[idx]
-        if (video_title !== updatedItem.video_title) {updatedItem.video_title = video_title}
-        if (video_url !== updatedItem.video_url) {updatedItem.video_url = video_url}
-        console.log('updateVideo //1', {updatedItem}, {gallery_videos})
-    }
-    const saveNewGalleryVideos = async () => {
+
+    const saveNewGalleryVideos = async (e) => {
+        console.log('saveNewGalleryVideos', e.detail, itemBup.gallery_videos)
+        const gallerie_videos_updated = e.detail
+        if (gallerie_videos_updated !== itemBup.gallery_videos) {
+            gallery_videos = []
+            gallery_videos = [...gallerie_videos_updated]
+        }
         await saveItem()
         editGalleryVideos = false
     }
     const cancelModifGalleryVideos = () => {
-        console.log('cancelModifGalleryVideos************')
-        // gallery_videos = []
-        // gallery_videos = itemBup.gallery_videos
-        console.log('cancelModifGalleryVideos', {itemBup}, {gallery_videos})
+        console.log('cancelModifGalleryVideos // 1', {gVBup}, {gallery_videos})
+        if (gVBup !== gallery_videos) {
+            gallery_videos = []
+            gallery_videos = [...gVBup]
+        }
+        console.log('cancelModifGalleryVideos // 2', {gVBup}, {gallery_videos})
         editGalleryVideos = false
-    }
-    const saveVideoInGallery = (e) => {
-        const videoUpdatedOrCreated = {
-            id: e.detail.id,
-            video_url: e.detail.video_url,
-            video_title: e.detail.video_title,
-        }
-        if (e.detail.video_position) {
-            videoUpdatedOrCreated.video_position = e.detail.video_position
-        }
-        console.log('saveVideoInGallery EditArticle 10', {videoUpdatedOrCreated}, {gallery_videos}, {itemBup},)
-
-        // UPDATING || CREATING
-        const idx = gallery_videos.findIndex(item => item.id == videoUpdatedOrCreated.id)
-        // UPDATING VIDEO
-        console.log('saveVideoInGallery EditArticle 11', {idx})
-        if (idx >= 0) {
-            const videoToUpdate = gallery_videos[idx] 
-            console.log('saveVideoInGallery EditArticle 2', {videoToUpdate})
-            if (videoUpdatedOrCreated.video_title === '') {
-                console.log(('videoUpdatedOrCreated.video_title vide'))
-                delete videoToUpdate.video_title 
-                if (videoUpdatedOrCreated.video_url !== videoToUpdate.video_url) {
-                    videoToUpdate.video_url = videoUpdatedOrCreated.video_url
-                }
-            }
-            if (videoUpdatedOrCreated.video_title !== '') {
-                console.log(('videoUpdatedOrCreated.video_title plein')) 
-                if (videoUpdatedOrCreated.video_title !== videoToUpdate.video_title) {
-                    videoToUpdate.video_title = videoUpdatedOrCreated.video_title
-                } 
-                if (videoUpdatedOrCreated.video_url !== videoToUpdate.video_url) {
-                    videoToUpdate.video_url = videoUpdatedOrCreated.video_url
-                }
-            }
-        }
-        // ADDING NEW VIDEO
-        if (idx < 0) {
-            gallery_videos.push(videoUpdatedOrCreated)
-        }
-        console.log('saveVideoInGallery EditArticle 3', {gallery_videos}, {itemBup})
-    }
-
-    let gallery_videosU = []
-    const deleteVideoInGallery = (e) => {
-        const idToDelete = e.detail.id
-        console.log('deleteVideoInGallery 0', e.detail)
-        updatevideosStoreDeleting(idToDelete, gallery_videosU, gallery_videos )
-        gallery_videos = gallery_videos.filter(video => video.id !== idToDelete)
-        console.log('deleteVideoInGallery 1', {gallery_videos})
     }
 
     const emptyGalleryVideos = () => {
@@ -881,7 +832,10 @@
         <div>{@html itemToEdit ? main_text : '<span class="title">Rédigez votre texte</span>'}</div>
         </HtmlO>
     {/if}
-    <h2 class="subtitle is-uppercase is-size-5 has-text-info">Éléments complémentaires - optionnels</h2>
+    {#if itemToEdit}
+        <h2 class="subtitle is-uppercase is-size-5 has-text-info">Éléments complémentaires - optionnels</h2>
+    {/if}
+    
     {#if editBanner}
     <div class="banner-choice">
         <p class="label">Bannière</p>
@@ -1046,9 +1000,8 @@
     {#if editGalleryVideos}
         <GalleryVideosUpload 
         {gallery_videos}
-        on:save-video={saveVideoInGallery}
-        on:update-video
-        on:delete-video={deleteVideoInGallery}
+        galleryVideosBup={gVBup}
+        on:save-updated-gallery={saveNewGalleryVideos}
         on:cancel-modif={cancelModifGalleryVideos}
         />
 
@@ -1062,7 +1015,9 @@
         creating={creatingGalleryVideosBtn}
         deleting={deletingGallVideosBtn}
         >
-            <GalleryVideos {gallery_videos} />
+            <GalleryVideos 
+            {gallery_videos} 
+            />
         </HtmlO>
 
         <Confirmation

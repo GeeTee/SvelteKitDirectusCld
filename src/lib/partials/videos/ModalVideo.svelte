@@ -44,6 +44,7 @@
 
   const savingVideo = () => {
     console.log('savingVideo ModalVidéo',id, video_title, video_url, video_position)
+    
     if (id) { // UPDATE
       if (needVideoPosition) {
         dispatch('update-video', {id, video_title, video_url, video_position})
@@ -56,10 +57,10 @@
     if (!id) { // CREATE 
       id = Date.now()
       if (needVideoPosition) {
-        dispatch('save-video', {id, video_title, video_url, video_position})
+        dispatch('save-new-video', {id, video_title, video_url, video_position})
       }
       if (!needVideoPosition) {
-        dispatch('save-video', {id, video_title, video_url})
+        dispatch('save-new-video', {id, video_title, video_url})
       } 
     }
     closeModal()

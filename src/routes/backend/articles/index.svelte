@@ -1,19 +1,17 @@
 <script>
-    import ar from '$lib/stores/articlesStore'
     import {goto} from '$app/navigation'
-    import ManageI from '$lib/UI/actionsIcones/ManageIcone.svelte';
-    import DeleteI from '$lib/UI/actionsIcones/DeleteIcone.svelte';
     import Button from '$lib/UI/Button.svelte'
+    export let articlesLinks = []
 </script>
 <h1 class="title">Gérer les Advanced Articles</h1>
 <div class="columns is-v-centered">
     <div class="column">
     <h2 class="title">Liste des Articles</h2>
-        {#if $ar.length > 0}
+        {#if articlesLinks.length > 0}
             <ul>
-                {#each $ar as {title, id, slug} (id)}
+                {#each articlesLinks as {title, id, slug} (id)}
                     <li>
-                        {title} <ManageI categ="backend/articles" {slug} /> 
+                        <a href="articles/{slug}/update">{title} &raquo;</a>
                     </li>
                 {/each}
             </ul>
