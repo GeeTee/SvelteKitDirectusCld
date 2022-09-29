@@ -1,5 +1,5 @@
 <script>
-    import ar from '$lib/stores/articlesStore'
+    // import ar from '$lib/stores/articlesStore'
     import { writable } from 'svelte/store'
     import { getContext, onDestroy } from "svelte";
     import { goto } from '$app/navigation'
@@ -247,8 +247,7 @@
             haveSaved = true
 
             if (res) {
-                ar.updateArticle(res.id, res)
-                console.log('update itemToEdit if res', $ar)
+                console.log('update itemToEdit if res')
             }            
         }
 
@@ -274,7 +273,7 @@
             if (res) {
                 // console.log('create article res')
                 ar.addArticle(res)
-                console.log('createItem store in res', $ar)
+                console.log('createItem store in res')
                 goto(`/backend/articles/${createdItem.slug}/update?action=complete-article`)
             }            
         }
@@ -469,9 +468,9 @@
     }
 
     const saveNewGalleryVideos = async (e) => {
-        console.log('saveNewGalleryVideos', e.detail, itemBup.gallery_videos)
+        console.log('saveNewGalleryVideos', e.detail, gVBup)
         const gallerie_videos_updated = e.detail
-        if (gallerie_videos_updated !== itemBup.gallery_videos) {
+        if (gallerie_videos_updated !== gVBup) {
             gallery_videos = []
             gallery_videos = [...gallerie_videos_updated]
         }

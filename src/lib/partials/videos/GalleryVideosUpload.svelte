@@ -30,7 +30,7 @@
         dispatch('save-updated-gallery', gallery_videos)
     }
 
-     $: console.log('XXXXXXXX',{galleryVideosBup})
+    //  $: console.log('XXXXXXXX',{galleryVideosBup})
 
     const cancelModifGalleryVideos = () => {
         console.log('cancelModifGalleryVideos //1', {galleryVideosBup}, {gallery_videos})
@@ -40,7 +40,7 @@
             resetStoreVideos(galleryVideosBup)
         }
         console.log('cancelModifGalleryVideos //2', {galleryVideosBup}, {gallery_videos})
-        dispatch('cancel-modif', gallery_videos)
+        dispatch('cancel-modif')
     }
 
     const saveNewVideo = (e) => {
@@ -49,7 +49,7 @@
         resetStoreVideos(gallery_videos)
     }
 
-    $: console.log('TTTTTTTTTTTTT',{gallery_videos})
+    // $: console.log('TTTTTTTTTTTTT',{gallery_videos})
 
     const updatingVideo = (e) => {
         // console.log('updatingVideo -1 //', {gallery_videos})
