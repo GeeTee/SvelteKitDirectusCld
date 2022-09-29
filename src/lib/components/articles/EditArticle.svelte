@@ -235,7 +235,7 @@
             if (gallery_videos.length <= 0) {
                updatedItem.gallery_videos = null 
             }
-            if (gallery_videos.length > 0) {
+            if (gallery_videos.length > 0 && gallery_videos !== itemBup.gallery_videos) {
                updatedItem.gallery_videos = gallery_videos
                console.log('itemToEdit gallery videos', {updatedItem})
             }
@@ -250,6 +250,7 @@
                 console.log('update itemToEdit if {res} 1', res)
                 itemToEdit = {...res}
                 itemBup = {...res}
+                gVBup = [...res.gallery_videos]
                 console.log('update itemToEdit if {res} 2', {itemToEdit}, {itemBup})
             }            
         }
@@ -838,7 +839,7 @@
     {/if}
     
     {#if editBanner}
-    <div class="banner-choice">
+    <div class="block">
         <p class="label">Bannière</p>
         {#if cld_public_id}
             <ImagUpload 

@@ -9,6 +9,7 @@
     export let video_url = null
     export let video_position = null
     export let id = null
+    export let forBlock = false
     export let needVideoPosition = true
     export let onlyAddVideoToGallery = false
 
@@ -57,8 +58,17 @@
     }
 
     const deletingVideo = () => {
-        console.log('delete-video')
-        dispatch('delete-video', {id})
+        if (!forBlock) {
+            // console.log('delete-video gallery')
+            dispatch('delete-video', {id})
+        }
+        if (forBlock) {
+            console.log('delete-video forBlock')
+            video_title = null 
+            video_url = null 
+            video_position = null
+            dispatch('delete-video')
+        }
         openVideoConfirm = false
     }
 </script>
@@ -137,8 +147,10 @@ closeButtonTitle='Abandonner'
 {video_url}
 {video_position}
 {needVideoPosition}
+{forBlock}
 on:save-new-video
 on:update-video={getVideoInfos}
+on:save-video-in-block={getVideoInfos}
 on:cancelMod={closeModale}
 />
 {/if}

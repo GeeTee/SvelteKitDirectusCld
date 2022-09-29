@@ -15,6 +15,7 @@
   export let video_url = ''
   export let video_position = ''
 	export let needVideoPosition = true
+  export let forBlock = false
 
   $: video_titleValid = (typeof video_title === 'string' && video_title !== '') ? true : false 
   $: video_urlValid = (typeof video_url === 'string' && video_url !== '') ? true : false
@@ -43,9 +44,9 @@
   }
 
   const savingVideo = () => {
-    console.log('savingVideo ModalVidéo',id, video_title, video_url, video_position)
+    console.log('savingVideo ModalVidéo',{id}, {video_title}, {video_url}, {video_position})
     
-    if (id) { // UPDATE
+    if (id) { // UPDATE VIDEO IN GALLERY
       if (needVideoPosition) {
         dispatch('update-video', {id, video_title, video_url, video_position})
       }
@@ -54,7 +55,7 @@
       } 
     }
    
-    if (!id) { // CREATE 
+    if (!id) { // CREATE VIDEO IN GALLERY 
       id = Date.now()
       if (needVideoPosition) {
         dispatch('save-new-video', {id, video_title, video_url, video_position})
@@ -62,6 +63,10 @@
       if (!needVideoPosition) {
         dispatch('save-new-video', {id, video_title, video_url})
       } 
+    }
+    if (forBlock) { // VIDEO IN BLOCK
+      console.log('VIDEO IN BLOCK',{id}, {video_title}, {video_url}, {video_position})
+      dispatch('save-video-in-block', {video_title, video_url, video_position})
     }
     closeModal()
   }

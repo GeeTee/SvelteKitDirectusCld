@@ -19,6 +19,8 @@
     export let deletingBlock = false
     export let newMoreBlockInfo = 'Créer un block'
 
+    const forBlock = true
+
     let isEdited = false
     // let showSavingWarning = false
     $: savingCreatingButtonText = creatingBlock ? 'Enregister' : 'Enregister la modif'
@@ -457,7 +459,8 @@
                 {video_url} 
                 {video_title} 
                 {video_position} 
-                on:save-video={saveVideo}
+                {forBlock}
+                on:updating-video={saveVideo}
                 on:delete-video={deleteVideo}
                 />
             </div>
