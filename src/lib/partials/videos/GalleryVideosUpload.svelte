@@ -103,6 +103,13 @@
             </li>
         {/each}
     </ol>
+        <div>
+            <EditVideo 
+            onlyAddVideoToGallery={true}
+            needVideoPosition={false} 
+            on:save-new-video={saveNewVideo}
+            />
+        </div>
         <div class="buttons">
             <Button
             is-primary
@@ -121,10 +128,12 @@
         </div>
 {/if}
 
-<div>
-    <EditVideo 
-    onlyAddVideoToGallery={true}
-    needVideoPosition={false} 
-    on:save-new-video={saveNewVideo}
-    />
-</div>
+{#if $videos.length <= 0}
+    <div>
+        <EditVideo 
+        onlyAddVideoToGallery={true}
+        needVideoPosition={false} 
+        on:save-new-video={saveNewVideo}
+        />
+    </div>
+{/if}

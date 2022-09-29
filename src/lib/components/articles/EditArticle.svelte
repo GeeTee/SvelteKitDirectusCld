@@ -250,7 +250,12 @@
                 console.log('update itemToEdit if {res} 1', res)
                 itemToEdit = {...res}
                 itemBup = {...res}
-                gVBup = [...res.gallery_videos]
+                if (res.gallery_videos) {
+                    gVBup = [...res.gallery_videos]
+                }
+                if (!res.gallery_videos) {
+                    gVBup = []
+                }
                 console.log('update itemToEdit if {res} 2', {itemToEdit}, {itemBup})
             }            
         }
