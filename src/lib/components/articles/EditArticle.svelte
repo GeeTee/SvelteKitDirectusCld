@@ -243,11 +243,14 @@
             console.log('itemToEdit saveItem 2', {updatedItem})
                         
             const res = await articles.updateOne(itemToEdit.id, updatedItem)
-            console.log('update itemToEdit saveItem 3', res)
+            // // console.log('update itemToEdit saveItem 3', res)
             haveSaved = true
 
             if (res) {
-                console.log('update itemToEdit if res')
+                console.log('update itemToEdit if {res} 1', res)
+                itemToEdit = {...res}
+                itemBup = {...res}
+                console.log('update itemToEdit if {res} 2', {itemToEdit}, {itemBup})
             }            
         }
 
@@ -272,7 +275,6 @@
             haveSaved = true
             if (res) {
                 // console.log('create article res')
-                ar.addArticle(res)
                 console.log('createItem store in res')
                 goto(`/backend/articles/${createdItem.slug}/update?action=complete-article`)
             }            
