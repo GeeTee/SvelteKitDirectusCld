@@ -18,6 +18,7 @@
     import ButtonsCancelConfirm from '$lib/UI/ButtonsCancelConfirm.svelte'
     import Confirmation from '$lib/UI/ConfirmationActionLite.svelte'
     import Notification from '$lib/UI/elements/NotificationDetails.svelte'
+    import NotificationM from '$lib/UI/elements/NotificationMotion.svelte';
     import IconsLinks from '$lib/UI/actionsIcones/IconsLinks.svelte'
     import GalleryVideos from '$lib/partials/videos/GalleryVideos.svelte'
     import GalleryVideosUpload from '$lib/partials/videos/GalleryVideosUpload.svelte'
@@ -88,6 +89,8 @@
     `
     $: textNotifItemToEdit = newArticle ? textNotifItemCreatingStep2 : textNotifItemToEditDefault
     $: headingNotifItemToEdit = newArticle ? headingNotifItemCreatingStep2 : headingNotifItemToEditDefault
+
+    const dangerIcon = '<span class="has-text-danger"><i class="fas fa-exclamation-triangle"></i></span>'
 
     // VARS CONFIRMATIONS
     let openGalleryModal = false
@@ -763,7 +766,13 @@
             value={title}
             on:input={event => (title = event.target.value)} />
         {#if title === '' && itemToEdit}
-             <span class="has-text-danger">Vous ne pouvez pas effacer le titre de l'article => abandonner la modif</span>
+             <NotificationM
+              is-danger
+              is-light
+              mb-4
+              heading='Attention'
+              text={`${dangerIcon} Vous ne pouvez pas effacer le titre de l'article`}
+              />
         {/if}
         {#if title === '' && !itemToEdit}
              <span class="has-text-info">Le titre de l'article est indispensable</span>
@@ -806,7 +815,13 @@
             bind:value={main_text}
             />
         {#if main_text === '' && itemToEdit}
-             <span class="has-text-danger">Vous ne pouvez pas effacer le texte principal de l'article => abandonner la modif</span>
+            <NotificationM
+            is-danger
+            is-light
+            mb-4
+            heading='Attention'
+            text={`${dangerIcon} Vous ne pouvez pas effacer le texte principal de l'article`}
+            />
         {/if}
         {#if main_text === '' && !itemToEdit}
              <span class="has-text-info">Le texte principal de l'article est indispensable</span>

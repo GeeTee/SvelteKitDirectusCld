@@ -103,29 +103,29 @@
             </li>
         {/each}
     </ol>
-        <div>
-            <EditVideo 
-            onlyAddVideoToGallery={true}
-            needVideoPosition={false} 
-            on:save-new-video={saveNewVideo}
-            />
-        </div>
-        <div class="buttons">
-            <Button
-            is-primary
-            enabled={true}
-            fct={saveNewGalleryVideos}
-            >
-                Enregistrer la modif
-            </Button>
-            <Button
-            is-info
-            enabled={true}
-            fct={cancelModifGalleryVideos}
-            >
-                Abandonner la modif
-            </Button>
-        </div>
+    <div>
+        <EditVideo 
+        onlyAddVideoToGallery={true}
+        needVideoPosition={false} 
+        on:save-new-video={saveNewVideo}
+        />
+    </div>
+    <div class="buttons">
+        <Button
+        is-primary
+        enabled={true}
+        fct={saveNewGalleryVideos}
+        >
+            Enregistrer la modif
+        </Button>
+        <Button
+        is-info
+        enabled={true}
+        fct={cancelModifGalleryVideos}
+        >
+            Abandonner la modif
+        </Button>
+    </div>
 {/if}
 
 {#if $videos.length <= 0}

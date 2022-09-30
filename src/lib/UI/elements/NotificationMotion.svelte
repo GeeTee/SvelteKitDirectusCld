@@ -22,7 +22,7 @@
 transition:fly="{{delay: 0, duration: 800, x: 1000, opacity: 0.5, easing: sineInOut}}"
 >
     {#if heading}
-        <h3 class="subtitle is-uppercase is-size-7 mb-2">{heading}</h3>
+        <h3 class="subtitle is-uppercase is-size-7 mb-2">{@html heading}</h3>
     {/if}
     <div class={classL} class:dn >{@html text}</div>
 </div>
