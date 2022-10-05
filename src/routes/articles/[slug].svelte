@@ -17,9 +17,12 @@
     <header>
         <h1 class="subtitle">{title}</h1>
     </header>
-    <div>
-        <Banner {cld_public_id} />
-    </div>
+    {#if cld_public_id}
+       <div>
+            <Banner {cld_public_id} />
+        </div>
+    {/if}
+
     <div class="content">
         <div>
             {@html main_text}

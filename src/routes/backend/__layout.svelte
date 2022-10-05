@@ -31,6 +31,7 @@
     export let authenticated = false
     
     const backendLinks = getContext('backendLinks')
+    const settingsLinks = getContext('settingsLinks')
     const isAuthenticated = authenticated
 </script>
 <div class="container">
@@ -38,6 +39,10 @@
         <div class="column is-one-fifth">
             <nav class="has-background-link-light p-2">
                 <Nav {path} links={backendLinks} {isAuthenticated} padLeft={true} />
+            </nav>
+            <hr>
+            <nav class="has-background-link-light p-2">
+                <Nav {path} links={settingsLinks} {isAuthenticated} padLeft={true} />
             </nav>
         </div>
         <div class="column">

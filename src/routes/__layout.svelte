@@ -134,6 +134,14 @@
         beAuthenticated: true
       },     
     ])
+    setContext('settingsLinks', [
+      {
+        href: '/backend/settings',
+        title: 'Settings',
+        beAuthenticated: true
+      },
+
+    ])
     setContext('footerLargeur','container')
     setContext('vcard',{
           full_name: 'Gilles Testard',
