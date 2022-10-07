@@ -193,6 +193,7 @@ const getSettings = async () => {
             query: `
             query ($title: String) {
                 website_settings (filter: {project: {project_title: {_eq: $title}}}) {
+                id
                 main_color_1
                 main_color_2 
                 main_color_3

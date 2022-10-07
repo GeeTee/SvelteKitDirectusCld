@@ -17,6 +17,7 @@
 		"prettier-plugin-svelte": "^2.7.0",
 		"sass": "^1.52.3",
 		"svelte": "^3.44.0",
+		"svelte-awesome-color-picker": "^1.2.3",
 		"svelte-preprocess": "^4.10.6"
 	},
 	"type": "module",
