@@ -10,6 +10,7 @@
 
     import TextInput from "$lib/UI/TextInput.svelte";
     import HtmlO from "$lib/UI/EditableHtml-0.svelte";
+    import GroupTitleTextForm from '$lib/partials/forms/GroupTitleTextForm.svelte';
     import Block from "$lib/UI/Block.svelte";
     import ImagUpload from '$lib/partials/images/cld/ImageUploadCld.svelte'
     import GallUpload from '$lib/partials/images/cld/GalleryImgsUploadCld.svelte'
@@ -138,6 +139,7 @@
     // VARS EDITING FIELDS
     $: editTitle = itemToEdit ? false : true
     $: editMainText = itemToEdit ? false : true
+    $: editTitleMainText = itemToEdit ? false : true
     let editBanner = false
     let editGallery = false
     let editGalleryVideos = false
@@ -205,11 +207,13 @@
             if (title !== itemBup.title) {
                 updatedItem.title = title
                 updatedItem.slug = slugify(title, options)
+                console.log('SAVING TITLE', {updatedItem})
             }
 
             // SAVING MAIN_TEXT
             if (main_text !== itemBup.main_text) {
                 updatedItem.main_text = main_text
+                console.log('SAVING MAIN_TEXT', {updatedItem})
             }
 
             // SAVING BLOCKS
@@ -352,18 +356,36 @@
         editBanner = false
     }
 
+    // TITLE + MAIN TEXT 
+    const editingTitleMainText = () => editTitleMainText = true
+    const cancelModifTitleMainText = () => {
+        cancelModifTitle()
+        cancelModifMainText()
+        editTitleMainText = false
+    }
+    const savingTitleMainText = async (e) => {
+        const {updatedTitleMainText} = e.detail
+        console.log('savingTitleMainText', {updatedTitleMainText})
+        if (updatedTitleMainText.title) {title = updatedTitleMainText.title}
+        if (updatedTitleMainText.main_text) {main_text = updatedTitleMainText.main_text}
+        console.log('savingTitleMainText', {title}, itemBup.title)
+        await saveItem()
+        editTitleMainText = false
+    }
+
     // TITLE
     $: titleValid = (title !== itemBup.title && title !== '') ? true : false
     const editingTitle = () => {
         editTitle = true
     }
+    
     const saveNewTitle = async () => {
         await saveItem()
         editTitle = false
     }
     const cancelModifTitle = () => {
         title = itemBup.title
-        editTitle = false
+        // editTitle = false
     }
 
     // MAIN TEXT 
@@ -378,7 +400,7 @@
     }
     const cancelModifMainText = () => {
         main_text = itemBup.main_text
-        editMainText = false
+        // editMainText = false
     }
 
     // GALLERY IMGS
@@ -755,7 +777,30 @@
     </div>
 
     <h2 class="subtitle is-uppercase is-size-5 has-text-primary">Éléments indispensables</h2>
-    {#if editTitle}
+
+    {#if editTitleMainText}
+        <GroupTitleTextForm 
+        {title}
+        {main_text}
+        on:canceling={cancelModifTitleMainText}
+        on:saving-title-maintext={savingTitleMainText}
+        />
+    {/if}
+
+    {#if !editTitleMainText}
+        <HtmlO 
+        label={`Titre et text principal`}
+        fct={editingTitleMainText}
+        >
+        <div>
+            <p class="title">{itemToEdit ? title : 'Renseigner le titre'}</p>
+        <div>{@html itemToEdit ? main_text : '<span class="title">Rédigez votre texte</span>'}</div>
+        </div>
+        </HtmlO>
+    {/if}
+
+
+    <!-- {#if editTitle}
         <TextInput
             id="title"
             label="Titre"
@@ -853,7 +898,13 @@
         >
         <div>{@html itemToEdit ? main_text : '<span class="title">Rédigez votre texte</span>'}</div>
         </HtmlO>
-    {/if}
+    {/if} -->
+
+
+
+
+
+
     {#if itemToEdit}
         <h2 class="subtitle is-uppercase is-size-5 has-text-info">Éléments complémentaires - optionnels</h2>
     {/if}
